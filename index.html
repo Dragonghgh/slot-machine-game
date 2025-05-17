@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucky Slots Deluxe</title>
+    <title>Lucky Slots Extreme</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         :root {
@@ -15,6 +15,9 @@
             --success: #06d6a0;
             --neon-pink: #ff00ff;
             --neon-blue: #00ffff;
+            --fruit-theme: #ff6b6b;
+            --gem-theme: #48dbfb;
+            --mystery-theme: #5f27cd;
         }
         
         * {
@@ -25,8 +28,8 @@
         }
         
         body {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                        url('https://images.unsplash.com/photo-1596838132731-3301c3fd4317') center/cover no-repeat fixed;
+            background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                        url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7') center/cover no-repeat fixed;
             color: white;
             min-height: 100vh;
             display: flex;
@@ -145,13 +148,45 @@
             box-shadow: 0 0 10px var(--primary);
         }
         
-        /* Slot Machine */
+        /* Slot Machines - Unique Themes */
+        /* Fruit Theme */
+        .slot-machine.fruit-theme {
+            background: linear-gradient(145deg, #ff6b6b, #ff8e8e);
+            border: 4px solid #ff4757;
+        }
+        
+        .slot-machine.fruit-theme .machine-header h2 {
+            color: #ff4757;
+            text-shadow: 0 0 5px #ff6b6b;
+        }
+        
+        /* Gem Theme */
+        .slot-machine.gem-theme {
+            background: linear-gradient(145deg, #48dbfb, #0abde3);
+            border: 4px solid #01a3a4;
+        }
+        
+        .slot-machine.gem-theme .machine-header h2 {
+            color: #01a3a4;
+            text-shadow: 0 0 5px #48dbfb;
+        }
+        
+        /* Mystery Theme */
+        .slot-machine.mystery-theme {
+            background: linear-gradient(145deg, #5f27cd, #341f97);
+            border: 4px solid #341f97;
+        }
+        
+        .slot-machine.mystery-theme .machine-header h2 {
+            color: #a55eea;
+            text-shadow: 0 0 5px #5f27cd;
+        }
+        
+        /* Common Slot Machine Styles */
         .slot-machine {
-            background: linear-gradient(145deg, #2a3a4e, #1d2a3a);
             border-radius: 10px;
             padding: 20px;
             margin-bottom: 30px;
-            border: 4px solid #444;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             position: relative;
             overflow: hidden;
@@ -178,8 +213,6 @@
         
         .machine-header h2 {
             font-size: 1.5rem;
-            color: var(--light);
-            text-shadow: 0 0 5px white;
         }
         
         .bet-controls {
@@ -506,7 +539,7 @@
     <div class="container">
         <!-- Authentication Screen -->
         <div class="auth-screen" id="authScreen">
-            <h1>🎰 Lucky Slots Deluxe 🎰</h1>
+            <h1>🎰 Lucky Slots Extreme 🎰</h1>
             <div class="auth-form" id="loginForm">
                 <h2>Login to Play</h2>
                 <div class="form-group">
@@ -539,7 +572,7 @@
         <!-- Game Screen -->
         <div class="game-screen" id="gameScreen">
             <header>
-                <h1>Lucky Slots Deluxe</h1>
+                <h1>Lucky Slots Extreme</h1>
                 <div class="user-info">
                     <div class="balance">Balance: <span id="balance">100</span> chips</div>
                     <button class="logout-btn" id="logoutBtn">Logout</button>
@@ -551,10 +584,10 @@
                 🏆 Progressive Jackpot: <span id="jackpot">1000</span> chips 🏆
             </div>
             
-            <!-- Low Stakes Machine -->
-            <div class="slot-machine">
+            <!-- Fruit Theme Slot Machine (Low Stakes) -->
+            <div class="slot-machine fruit-theme">
                 <div class="machine-header">
-                    <h2>Low Stakes</h2>
+                    <h2>Fruit Fiesta</h2>
                     <div class="bet-controls">
                         <button class="bet-btn" id="lowBetDown">-</button>
                         <div class="bet-amount">Bet: <span id="lowBet">5</span></div>
@@ -564,25 +597,26 @@
                 <div class="slots">
                     <div class="slot tooltip" id="low1">
                         🍒
-                        <span class="tooltiptext">Cherries: Match 3 to win 3x your bet</span>
+                        <span class="tooltiptext">Cherries: Match 3 to win 2x your bet</span>
                     </div>
                     <div class="slot tooltip" id="low2">
                         🍋
-                        <span class="tooltiptext">Lemons: Match 3 to win 4x your bet</span>
+                        <span class="tooltiptext">Lemons: Match 3 to win 3x your bet</span>
                     </div>
                     <div class="slot tooltip" id="low3">
                         🍊
-                        <span class="tooltiptext">Oranges: Match 3 to win 5x your bet</span>
+                        <span class="tooltiptext">Oranges: Match 3 to win 4x your bet</span>
                     </div>
                 </div>
                 <button class="spin-btn" id="spinLow">SPIN</button>
                 <button class="spin-btn auto-spin-btn" id="autoSpinLow">AUTO SPIN (5x)</button>
+                <div class="slot-info">Classic fruit slots - simple but rewarding!</div>
             </div>
             
-            <!-- Medium Stakes Machine -->
-            <div class="slot-machine">
+            <!-- Gem Theme Slot Machine (Medium Stakes) -->
+            <div class="slot-machine gem-theme">
                 <div class="machine-header">
-                    <h2>Medium Stakes</h2>
+                    <h2>Gemstone Glory</h2>
                     <div class="bet-controls">
                         <button class="bet-btn" id="mediumBetDown">-</button>
                         <div class="bet-amount">Bet: <span id="mediumBet">25</span></div>
@@ -591,26 +625,27 @@
                 </div>
                 <div class="slots">
                     <div class="slot tooltip" id="medium1">
-                        🍇
-                        <span class="tooltiptext">Grapes: Match 3 to win 7x your bet</span>
+                        💎
+                        <span class="tooltiptext">Diamond: Triggers bonus round when matched</span>
                     </div>
                     <div class="slot tooltip" id="medium2">
-                        🍉
-                        <span class="tooltiptext">Watermelon: Match 3 to win 10x your bet</span>
+                        🔮
+                        <span class="tooltiptext">Crystal Ball: Wild symbol - substitutes for others</span>
                     </div>
                     <div class="slot tooltip" id="medium3">
-                        ️7️⃣
-                        <span class="tooltiptext">7's: Match 3 to win 20x your bet</span>
+                        💍
+                        <span class="tooltiptext">Ring: Match 3 to win 10x your bet</span>
                     </div>
                 </div>
                 <button class="spin-btn" id="spinMedium">SPIN</button>
                 <button class="spin-btn auto-spin-btn" id="autoSpinMedium">AUTO SPIN (5x)</button>
+                <div class="slot-info">Gem slots - wild symbols and bonus triggers!</div>
             </div>
             
-            <!-- High Stakes Machine -->
-            <div class="slot-machine">
+            <!-- Mystery Theme Slot Machine (High Stakes) -->
+            <div class="slot-machine mystery-theme">
                 <div class="machine-header">
-                    <h2>High Stakes</h2>
+                    <h2>Mystery Vault</h2>
                     <div class="bet-controls">
                         <button class="bet-btn" id="highBetDown">-</button>
                         <div class="bet-amount">Bet: <span id="highBet">100</span></div>
@@ -619,20 +654,21 @@
                 </div>
                 <div class="slots">
                     <div class="slot tooltip" id="high1">
-                        💎
-                        <span class="tooltiptext">Diamond: Triggers bonus round when matched</span>
-                    </div>
-                    <div class="slot tooltip" id="high2">
-                        🍀
-                        <span class="tooltiptext">Clover: Lucky symbol - increases win chance</span>
-                    </div>
-                    <div class="slot tooltip" id="high3">
                         🏆
                         <span class="tooltiptext">Trophy: Win the progressive jackpot!</span>
+                    </div>
+                    <div class="slot tooltip" id="high2">
+                        ❓
+                        <span class="tooltiptext">Mystery: Random multiplier (2x-20x)</span>
+                    </div>
+                    <div class="slot tooltip" id="high3">
+                        ☠️
+                        <span class="tooltiptext">Skull: Lose your bet if matched</span>
                     </div>
                 </div>
                 <button class="spin-btn" id="spinHigh">SPIN</button>
                 <button class="spin-btn auto-spin-btn" id="autoSpinHigh">AUTO SPIN (5x)</button>
+                <div class="slot-info">High risk, high reward - not for the faint of heart!</div>
             </div>
             
             <div class="message-box" id="messageBox"></div>
@@ -653,9 +689,9 @@
             <h2>BONUS ROUND!</h2>
             <p>You've won <span id="freeSpinsCount">5</span> free spins with 3x multipliers!</p>
             <div class="bonus-slots">
-                <div class="bonus-slot" id="bonusSlot1">🍒</div>
-                <div class="bonus-slot" id="bonusSlot2">🍒</div>
-                <div class="bonus-slot" id="bonusSlot3">🍒</div>
+                <div class="bonus-slot" id="bonusSlot1">💎</div>
+                <div class="bonus-slot" id="bonusSlot2">💎</div>
+                <div class="bonus-slot" id="bonusSlot3">💎</div>
             </div>
             <div>
                 <p>Spins remaining: <span id="spinsRemaining">5</span></p>
@@ -675,17 +711,50 @@
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        // Game Data
-        const symbols = {
-            '🍒': { name: 'Cherry', payout: 3, description: 'Match 3 to win 3x your bet' },
-            '🍋': { name: 'Lemon', payout: 4, description: 'Match 3 to win 4x your bet' },
-            '🍊': { name: 'Orange', payout: 5, description: 'Match 3 to win 5x your bet' },
-            '🍇': { name: 'Grape', payout: 7, description: 'Match 3 to win 7x your bet' },
-            '🍉': { name: 'Watermelon', payout: 10, description: 'Match 3 to win 10x your bet' },
-            '7️⃣': { name: 'Seven', payout: 20, description: 'Match 3 to win 20x your bet' },
-            '💎': { name: 'Diamond', payout: 0, description: 'Triggers bonus round when matched' },
-            '🍀': { name: 'Clover', payout: 0, description: 'Lucky symbol - increases win chance' },
-            '🏆': { name: 'Trophy', payout: 0, description: 'Win the progressive jackpot!' }
+        // Game Data - Unique for each slot machine
+        const slotConfigs = {
+            low: {
+                name: "Fruit Fiesta",
+                theme: "fruit-theme",
+                symbols: {
+                    '🍒': { name: 'Cherry', payout: 2, weight: 30 },
+                    '🍋': { name: 'Lemon', payout: 3, weight: 25 },
+                    '🍊': { name: 'Orange', payout: 4, weight: 20 },
+                    '🍇': { name: 'Grape', payout: 5, weight: 15 },
+                    '🍉': { name: 'Watermelon', payout: 7, weight: 8 },
+                    '7️⃣': { name: 'Seven', payout: 10, weight: 2 }
+                },
+                winChance: 0.25, // 25% chance to win (harder than before)
+                description: "Classic fruit slots - simple but rewarding!"
+            },
+            medium: {
+                name: "Gemstone Glory",
+                theme: "gem-theme",
+                symbols: {
+                    '💎': { name: 'Diamond', payout: 0, weight: 10, bonusTrigger: true },
+                    '🔮': { name: 'Crystal Ball', payout: 0, weight: 20, isWild: true },
+                    '💍': { name: 'Ring', payout: 10, weight: 25 },
+                    '🔱': { name: 'Trident', payout: 7, weight: 20 },
+                    '👑': { name: 'Crown', payout: 15, weight: 15 },
+                    '💰': { name: 'Money Bag', payout: 20, weight: 10 }
+                },
+                winChance: 0.2, // 20% chance to win
+                description: "Gem slots - wild symbols and bonus triggers!"
+            },
+            high: {
+                name: "Mystery Vault",
+                theme: "mystery-theme",
+                symbols: {
+                    '🏆': { name: 'Trophy', payout: 0, weight: 5, isJackpot: true },
+                    '❓': { name: 'Mystery', payout: 0, weight: 30, isMystery: true },
+                    '☠️': { name: 'Skull', payout: -1, weight: 20 }, // Negative means lose bet
+                    '🤑': { name: 'Money Face', payout: 15, weight: 20 },
+                    '💸': { name: 'Money Wings', payout: 20, weight: 15 },
+                    '💰': { name: 'Money Bag', payout: 25, weight: 10 }
+                },
+                winChance: 0.15, // Only 15% chance to win
+                description: "High risk, high reward - not for the faint of heart!"
+            }
         };
         
         // Game State
@@ -916,12 +985,30 @@
             playSound(coinSound);
         }
         
-        // Spin the slots - with adjusted odds
+        // Get weighted random symbol for a specific slot machine
+        function getWeightedRandomSymbol(level, exclude = null) {
+            const config = slotConfigs[level];
+            let symbolPool = [];
+            
+            for (const symbol in config.symbols) {
+                if (!exclude || symbol !== exclude) {
+                    const weight = config.symbols[symbol].weight;
+                    for (let i = 0; i < weight; i++) {
+                        symbolPool.push(symbol);
+                    }
+                }
+            }
+            
+            return symbolPool[Math.floor(Math.random() * symbolPool.length)];
+        }
+        
+        // Spin the slots - with adjusted odds and unique mechanics
         function spin(level) {
             if (!currentUser || bonusRoundActive) return false;
             
             const bet = bets[level];
             const user = users[currentUser];
+            const config = slotConfigs[level];
             
             if (user.balance < bet) {
                 showMessage("Not enough chips to bet!", true);
@@ -969,23 +1056,58 @@
                     
                     // Final result with adjusted odds
                     const results = [];
-                    // 30% chance of getting a winning combination (was 40%)
-                    if (Math.random() < 0.3) {
-                        // Choose a random winning combination
-                        const winningSymbols = Object.keys(symbols).filter(sym => symbols[sym].payout > 0);
-                        const symbol = winningSymbols[Math.floor(Math.random() * winningSymbols.length)];
+                    let forceWin = false;
+                    let forceBonus = false;
+                    let forceJackpot = false;
+                    
+                    // Check if we should force a win (based on winChance)
+                    if (Math.random() < config.winChance) {
+                        forceWin = true;
                         
-                        // 60% chance of full match, 40% chance of partial match
-                        if (Math.random() < 0.6) {
-                            // Full match
-                            results[0] = symbol;
-                            results[1] = symbol;
-                            results[2] = symbol;
+                        // Small chance to force bonus or jackpot
+                        if (level === 'medium' && Math.random() < 0.05) {
+                            forceBonus = true;
+                        } else if (level === 'high' && Math.random() < 0.02) {
+                            forceJackpot = true;
+                        }
+                    }
+                    
+                    if (forceJackpot) {
+                        // Force jackpot win
+                        results[0] = '🏆';
+                        results[1] = '🏆';
+                        results[2] = '🏆';
+                    } else if (forceBonus && level === 'medium') {
+                        // Force bonus trigger
+                        results[0] = '💎';
+                        results[1] = '💎';
+                        results[2] = '💎';
+                    } else if (forceWin) {
+                        // Force a regular win
+                        const winningSymbols = Object.keys(config.symbols).filter(sym => 
+                            config.symbols[sym].payout > 0 && !config.symbols[sym].isWild
+                        );
+                        
+                        if (winningSymbols.length > 0) {
+                            const symbol = winningSymbols[Math.floor(Math.random() * winningSymbols.length)];
+                            
+                            // 60% chance of full match, 40% chance of partial match
+                            if (Math.random() < 0.6) {
+                                // Full match
+                                results[0] = symbol;
+                                results[1] = symbol;
+                                results[2] = symbol;
+                            } else {
+                                // Partial match (two of the same)
+                                results[0] = symbol;
+                                results[1] = symbol;
+                                results[2] = getWeightedRandomSymbol(level, symbol); // Ensure third is different
+                            }
                         } else {
-                            // Partial match (two of the same)
-                            results[0] = symbol;
-                            results[1] = symbol;
-                            results[2] = getWeightedRandomSymbol(level, symbol); // Ensure third is different
+                            // No winning symbols available (shouldn't happen)
+                            results[0] = getWeightedRandomSymbol(level);
+                            results[1] = getWeightedRandomSymbol(level);
+                            results[2] = getWeightedRandomSymbol(level);
                         }
                     } else {
                         // Regular random results
@@ -994,8 +1116,23 @@
                         results[2] = getWeightedRandomSymbol(level);
                     }
                     
+                    // Apply wild symbols (only for gem theme)
+                    if (level === 'medium') {
+                        // Check for wild symbols and replace adjacent symbols
+                        if (results[1] === '🔮') {
+                            // Middle wild - replace both sides
+                            results[0] = results[2];
+                        } else if (results[0] === '🔮') {
+                            // Left wild - replace with right
+                            results[0] = results[1];
+                        } else if (results[2] === '🔮') {
+                            // Right wild - replace with left
+                            results[2] = results[1];
+                        }
+                    }
+                    
                     // Check for bonus trigger (diamonds)
-                    if (results.filter(s => s === '💎').length >= 3 && level === 'high') {
+                    if (results.filter(s => s === '💎').length >= 3 && level === 'medium') {
                         startBonusRound(5); // 5 free spins
                     }
                     
@@ -1013,59 +1150,16 @@
             }, 100);
         }
         
-        // Weighted random symbol generator (makes some symbols appear more often)
-        function getWeightedRandomSymbol(level, exclude = null) {
-            const weights = {
-                'low': {
-                    '🍒': 30,
-                    '🍋': 25,
-                    '🍊': 20,
-                    '🍇': 15,
-                    '🍉': 8,
-                    '7️⃣': 2
-                },
-                'medium': {
-                    '🍒': 20,
-                    '🍋': 20,
-                    '🍊': 20,
-                    '🍇': 20,
-                    '🍉': 15,
-                    '7️⃣': 5
-                },
-                'high': {
-                    '💎': 10,
-                    '🍀': 30,
-                    '🏆': 5,
-                    '🍒': 15,
-                    '🍋': 15,
-                    '🍊': 15,
-                    '🍇': 5,
-                    '🍉': 3,
-                    '7️⃣': 2
-                }
-            };
-            
-            let symbolPool = [];
-            for (const symbol in weights[level]) {
-                if (!exclude || symbol !== exclude) {
-                    for (let i = 0; i < weights[level][symbol]; i++) {
-                        symbolPool.push(symbol);
-                    }
-                }
-            }
-            
-            return symbolPool[Math.floor(Math.random() * symbolPool.length)];
-        }
-        
-        // Check if won
+        // Check if won - with unique mechanics for each slot type
         function checkWin(results, level) {
             const resultStr = results.join('');
             const user = users[currentUser];
             const bet = bets[level];
+            const config = slotConfigs[level];
             let winAmount = 0;
             
             // Check for jackpot win (3 trophies)
-            if (results[0] === '🏆' && results[1] === '🏆' && results[2] === '🏆') {
+            if (results[0] === '🏆' && results[1] === '🏆' && results[2] === '🏆' && level === 'high') {
                 winAmount = jackpot;
                 user.balance += winAmount;
                 jackpot = 1000; // Reset jackpot
@@ -1088,9 +1182,47 @@
                 return;
             }
             
+            // Check for skull (lose bet)
+            if (level === 'high' && results.filter(s => s === '☠️').length >= 2) {
+                playSound(loseSound);
+                showMessage("Skulls! You lost your bet!", true);
+                return;
+            }
+            
+            // Check for mystery symbol (random multiplier)
+            if (level === 'high' && results.includes('❓')) {
+                const mysteryCount = results.filter(s => s === '❓').length;
+                const multiplier = mysteryCount === 3 ? Math.floor(Math.random() * 15) + 6 : // 6-20x for 3
+                                  mysteryCount === 2 ? Math.floor(Math.random() * 10) + 3 : // 3-12x for 2
+                                  Math.floor(Math.random() * 5) + 2; // 2-6x for 1
+                
+                winAmount = bet * multiplier;
+                user.balance += winAmount;
+                updateBalance();
+                
+                // Win animation
+                document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
+                    .forEach(slot => {
+                        if (slot.textContent === '❓') slot.classList.add('win');
+                    });
+                
+                setTimeout(() => {
+                    document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
+                        .forEach(slot => slot.classList.remove('win'));
+                }, 1500);
+                
+                playSound(winSound);
+                showMessage(`Mystery Multiplier! You won ${winAmount} chips (${multiplier}x)!`);
+                
+                if (multiplier >= 10) {
+                    confetti({ particleCount: 100, spread: 70 });
+                }
+                return;
+            }
+            
             // Check for exact matches first (highest payout)
             if (results[0] === results[1] && results[1] === results[2]) {
-                const symbol = symbols[results[0]];
+                const symbol = config.symbols[results[0]];
                 if (symbol.payout > 0) {
                     winAmount = bet * symbol.payout;
                     user.balance += winAmount;
@@ -1125,10 +1257,10 @@
                     }
                 }
             } 
-            // Check for two matching symbols
-            else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
+            // Check for two matching symbols (only in fruit and gem themes)
+            else if (level !== 'high' && (results[0] === results[1] || results[1] === results[2] || results[0] === results[2])) {
                 const matchedSymbol = results[0] === results[1] ? results[0] : results[2];
-                const symbol = symbols[matchedSymbol];
+                const symbol = config.symbols[matchedSymbol];
                 
                 if (symbol.payout > 0) {
                     winAmount = Math.floor(bet * symbol.payout * 0.5); // Half payout for two matches
@@ -1207,7 +1339,7 @@
             let spins = 0;
             const spinInterval = setInterval(() => {
                 slots.forEach(slot => {
-                    slot.textContent = getWeightedRandomSymbol('high');
+                    slot.textContent = getWeightedRandomSymbol('medium');
                 });
                 
                 spins++;
@@ -1219,18 +1351,18 @@
                     
                     // Final result
                     const results = [
-                        getWeightedRandomSymbol('high'),
-                        getWeightedRandomSymbol('high'),
-                        getWeightedRandomSymbol('high')
+                        getWeightedRandomSymbol('medium'),
+                        getWeightedRandomSymbol('medium'),
+                        getWeightedRandomSymbol('medium')
                     ];
                     
                     slots.forEach((slot, i) => slot.textContent = results[i]);
                     
                     // Check for win (3x multiplier in bonus)
                     if (results[0] === results[1] && results[1] === results[2]) {
-                        const symbol = symbols[results[0]];
+                        const symbol = slotConfigs.medium.symbols[results[0]];
                         if (symbol.payout > 0) {
-                            const winAmount = bets.high * symbol.payout * 3; // 3x multiplier
+                            const winAmount = bets.medium * symbol.payout * 3; // 3x multiplier
                             bonusWins += winAmount;
                             bonusWinsDisplay.textContent = bonusWins;
                             

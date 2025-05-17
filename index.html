@@ -68,6 +68,10 @@
             text-align: left;
         }
         
+        label {
+            font-weight: bold;
+        }
+        
         input {
             padding: 12px 15px;
             border-radius: 5px;
@@ -99,6 +103,15 @@
             color: var(--light);
             text-decoration: underline;
             font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .error-message {
+            color: #ff6b6b;
+            font-size: 0.9rem;
+            margin-top: -15px;
+            display: none;
         }
         
         /* Game Screen */
@@ -127,6 +140,7 @@
         }
         
         .balance {
+            font-size: 1.2rem;
             background: rgba(255, 255, 255, 0.1);
             padding: 10px 20px;
             border-radius: 50px;
@@ -281,10 +295,12 @@
                 <div class="form-group">
                     <label for="loginUsername">Username</label>
                     <input type="text" id="loginUsername" placeholder="Enter your username">
+                    <div class="error-message" id="loginUsernameError"></div>
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Password</label>
                     <input type="password" id="loginPassword" placeholder="Enter your password">
+                    <div class="error-message" id="loginPasswordError"></div>
                 </div>
                 <button id="loginBtn">Login</button>
                 <button class="toggle-auth" id="showSignup">Don't have an account? Sign up</button>
@@ -294,11 +310,13 @@
                 <h2>Create Account</h2>
                 <div class="form-group">
                     <label for="signupUsername">Username</label>
-                    <input type="text" id="signupUsername" placeholder="Choose a username">
+                    <input type="text" id="signupUsername" placeholder="Choose a username (min 3 chars)">
+                    <div class="error-message" id="signupUsernameError"></div>
                 </div>
                 <div class="form-group">
                     <label for="signupPassword">Password</label>
-                    <input type="password" id="signupPassword" placeholder="Choose a password">
+                    <input type="password" id="signupPassword" placeholder="Choose a password (min 4 chars)">
+                    <div class="error-message" id="signupPasswordError"></div>
                 </div>
                 <button id="signupBtn">Create Account</button>
                 <button class="toggle-auth" id="showLogin">Already have an account? Login</button>
@@ -410,6 +428,12 @@
         const balanceDisplay = document.getElementById('balance');
         const messageBox = document.getElementById('messageBox');
         
+        // Error message elements
+        const loginUsernameError = document.getElementById('loginUsernameError');
+        const loginPasswordError = document.getElementById('loginPasswordError');
+        const signupUsernameError = document.getElementById('signupUsernameError');
+        const signupPasswordError = document.getElementById('signupPasswordError');
+        
         // Load saved data
         function loadData() {
             const savedUsers = localStorage.getItem('slotUsers');
@@ -456,15 +480,39 @@
             }
         }
         
+        // Clear error messages
+        function clearErrors() {
+            loginUsernameError.style.display = 'none';
+            loginPasswordError.style.display = 'none';
+            signupUsernameError.style.display = 'none';
+            signupPasswordError.style.display = 'none';
+        }
+        
         // Login function
         function login(username, password) {
+            clearErrors();
+            
+            if (!username) {
+                loginUsernameError.textContent = "Username is required";
+                loginUsernameError.style.display = 'block';
+                return false;
+            }
+            
+            if (!password) {
+                loginPasswordError.textContent = "Password is required";
+                loginPasswordError.style.display = 'block';
+                return false;
+            }
+            
             if (!users[username]) {
-                showMessage("Username not found", true);
+                loginUsernameError.textContent = "Username not found";
+                loginUsernameError.style.display = 'block';
                 return false;
             }
             
             if (users[username].password !== password) {
-                showMessage("Incorrect password", true);
+                loginPasswordError.textContent = "Incorrect password";
+                loginPasswordError.style.display = 'block';
                 return false;
             }
             
@@ -472,23 +520,45 @@
             authScreen.style.display = 'none';
             gameScreen.style.display = 'block';
             updateBalance();
+            
+            // Save last user
+            localStorage.setItem('lastUser', currentUser);
+            
+            showMessage(`Welcome back, ${username}!`);
             return true;
         }
         
         // Signup function
         function signup(username, password) {
-            if (users[username]) {
-                showMessage("Username already exists", true);
+            clearErrors();
+            
+            if (!username) {
+                signupUsernameError.textContent = "Username is required";
+                signupUsernameError.style.display = 'block';
                 return false;
             }
             
             if (username.length < 3) {
-                showMessage("Username must be at least 3 characters", true);
+                signupUsernameError.textContent = "Username must be at least 3 characters";
+                signupUsernameError.style.display = 'block';
+                return false;
+            }
+            
+            if (!password) {
+                signupPasswordError.textContent = "Password is required";
+                signupPasswordError.style.display = 'block';
                 return false;
             }
             
             if (password.length < 4) {
-                showMessage("Password must be at least 4 characters", true);
+                signupPasswordError.textContent = "Password must be at least 4 characters";
+                signupPasswordError.style.display = 'block';
+                return false;
+            }
+            
+            if (users[username]) {
+                signupUsernameError.textContent = "Username already exists";
+                signupUsernameError.style.display = 'block';
                 return false;
             }
             
@@ -502,7 +572,11 @@
             gameScreen.style.display = 'block';
             updateBalance();
             saveData();
-            showMessage("Account created successfully! You start with 100 chips.");
+            
+            // Save last user
+            localStorage.setItem('lastUser', currentUser);
+            
+            showMessage(`Account created successfully, ${username}! You start with 100 chips.`);
             return true;
         }
         
@@ -513,6 +587,15 @@
             authScreen.style.display = 'block';
             loginForm.style.display = 'block';
             signupForm.style.display = 'none';
+            
+            // Clear form fields
+            document.getElementById('loginUsername').value = '';
+            document.getElementById('loginPassword').value = '';
+            document.getElementById('signupUsername').value = '';
+            document.getElementById('signupPassword').value = '';
+            
+            // Clear last user
+            localStorage.removeItem('lastUser');
         }
         
         // Adjust bet amount
@@ -617,13 +700,15 @@
         
         // Event Listeners
         showLogin.addEventListener('click', () => {
-            loginForm.style.display = 'none';
-            signupForm.style.display = 'block';
+            loginForm.style.display = 'block';
+            signupForm.style.display = 'none';
+            clearErrors();
         });
         
         showSignup.addEventListener('click', () => {
-            signupForm.style.display = 'none';
-            loginForm.style.display = 'block';
+            signupForm.style.display = 'block';
+            loginForm.style.display = 'none';
+            clearErrors();
         });
         
         loginBtn.addEventListener('click', () => {
@@ -665,10 +750,36 @@
             updateBalance();
         }
         
-        // Save last user on unload
-        window.addEventListener('beforeunload', () => {
-            if (currentUser) {
-                localStorage.setItem('lastUser', currentUser);
+        // Allow form submission with Enter key
+        document.getElementById('loginUsername').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const username = document.getElementById('loginUsername').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                login(username, password);
+            }
+        });
+        
+        document.getElementById('loginPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const username = document.getElementById('loginUsername').value.trim();
+                const password = document.getElementById('loginPassword').value;
+                login(username, password);
+            }
+        });
+        
+        document.getElementById('signupUsername').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const username = document.getElementById('signupUsername').value.trim();
+                const password = document.getElementById('signupPassword').value;
+                signup(username, password);
+            }
+        });
+        
+        document.getElementById('signupPassword').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                const username = document.getElementById('signupUsername').value.trim();
+                const password = document.getElementById('signupPassword').value;
+                signup(username, password);
             }
         });
     </script>

@@ -68,10 +68,6 @@
             text-align: left;
         }
         
-        label {
-            font-weight: bold;
-        }
-        
         input {
             padding: 12px 15px;
             border-radius: 5px;
@@ -103,15 +99,8 @@
             color: var(--light);
             text-decoration: underline;
             font-size: 0.9rem;
-            border: none;
             cursor: pointer;
-        }
-        
-        .error-message {
-            color: #ff6b6b;
-            font-size: 0.9rem;
-            margin-top: -15px;
-            display: none;
+            border: none;
         }
         
         /* Game Screen */
@@ -159,7 +148,7 @@
             background: linear-gradient(145deg, #f8f9fa, #e9ecef);
             border-radius: 10px;
             padding: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             border: 8px solid #333;
             color: var(--dark);
         }
@@ -232,9 +221,27 @@
             font-size: 1.2rem;
             padding: 15px;
             background: linear-gradient(to right, var(--primary), #f4a261);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
         
-        /* Message Box */
+        .spin-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .spin-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .auto-spin-btn {
+            background: var(--secondary);
+            margin-top: 10px;
+        }
+        
         .message-box {
             background: rgba(255, 255, 255, 0.9);
             color: var(--dark);
@@ -246,12 +253,35 @@
             display: none;
         }
         
-        /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        /* Leaderboard */
+        .leaderboard {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
         }
         
+        .leaderboard h3 {
+            color: var(--gold);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        #leaderboardList {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        #leaderboardList li {
+            padding: 8px;
+            margin: 5px 0;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        /* Animations */
         @keyframes spin {
             0% { transform: rotateX(0deg); }
             100% { transform: rotateX(360deg); }
@@ -271,17 +301,14 @@
             animation: win 0.5s 3;
         }
         
-        /* Responsive */
-        @media (max-width: 600px) {
-            .slot {
-                width: 70px;
-                height: 70px;
-                font-size: 3rem;
-            }
-            
-            .container {
-                padding: 15px;
-            }
+        @keyframes jackpot {
+            0% { transform: scale(1); color: black; }
+            50% { transform: scale(1.2); color: red; }
+            100% { transform: scale(1); color: black; }
+        }
+        
+        .jackpot {
+            animation: jackpot 0.5s 3;
         }
     </style>
 </head>
@@ -295,12 +322,10 @@
                 <div class="form-group">
                     <label for="loginUsername">Username</label>
                     <input type="text" id="loginUsername" placeholder="Enter your username">
-                    <div class="error-message" id="loginUsernameError"></div>
                 </div>
                 <div class="form-group">
                     <label for="loginPassword">Password</label>
                     <input type="password" id="loginPassword" placeholder="Enter your password">
-                    <div class="error-message" id="loginPasswordError"></div>
                 </div>
                 <button id="loginBtn">Login</button>
                 <button class="toggle-auth" id="showSignup">Don't have an account? Sign up</button>
@@ -311,12 +336,10 @@
                 <div class="form-group">
                     <label for="signupUsername">Username</label>
                     <input type="text" id="signupUsername" placeholder="Choose a username (min 3 chars)">
-                    <div class="error-message" id="signupUsernameError"></div>
                 </div>
                 <div class="form-group">
                     <label for="signupPassword">Password</label>
                     <input type="password" id="signupPassword" placeholder="Choose a password (min 4 chars)">
-                    <div class="error-message" id="signupPasswordError"></div>
                 </div>
                 <button id="signupBtn">Create Account</button>
                 <button class="toggle-auth" id="showLogin">Already have an account? Login</button>
@@ -349,6 +372,7 @@
                     <div class="slot" id="low3">🍒</div>
                 </div>
                 <button class="spin-btn" id="spinLow">SPIN</button>
+                <button class="spin-btn auto-spin-btn" id="autoSpinLow">AUTO SPIN (5x)</button>
             </div>
             
             <!-- Medium Stakes Machine -->
@@ -367,6 +391,7 @@
                     <div class="slot" id="medium3">🍒</div>
                 </div>
                 <button class="spin-btn" id="spinMedium">SPIN</button>
+                <button class="spin-btn auto-spin-btn" id="autoSpinMedium">AUTO SPIN (5x)</button>
             </div>
             
             <!-- High Stakes Machine -->
@@ -385,11 +410,26 @@
                     <div class="slot" id="high3">🍒</div>
                 </div>
                 <button class="spin-btn" id="spinHigh">SPIN</button>
+                <button class="spin-btn auto-spin-btn" id="autoSpinHigh">AUTO SPIN (5x)</button>
             </div>
             
             <div class="message-box" id="messageBox"></div>
+            
+            <!-- Leaderboard -->
+            <div class="leaderboard">
+                <h3>🏆 Top Winners 🏆</h3>
+                <ol id="leaderboardList">
+                    <!-- Leaderboard entries will appear here -->
+                </ol>
+            </div>
         </div>
     </div>
+
+    <!-- Sound Effects -->
+    <audio id="spinSound" src="https://assets.mixkit.co/sfx/preview/mixkit-slot-machine-spin-1930.mp3"></audio>
+    <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3"></audio>
+    <audio id="loseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-retro-game-over-213.mp3"></audio>
+    <audio id="coinSound" src="https://assets.mixkit.co/sfx/preview/mixkit-coins-handling-1939.mp3"></audio>
 
     <script>
         // Game Data
@@ -397,13 +437,6 @@
         const payouts = {
             '🍒🍒🍒': 2, '🍋🍋🍋': 3, '🍊🍊🍊': 4,
             '🍇🍇🍇': 5, '🍉🍉🍉': 7, '7️⃣7️⃣7️⃣': 10
-        };
-        
-        // Bet ranges
-        const betRanges = {
-            low: { min: 1, max: 10, step: 1 },
-            medium: { min: 10, max: 25, step: 5 },
-            high: { min: 50, max: 250, step: 25 }
         };
         
         // Game State
@@ -414,6 +447,9 @@
             medium: 25,
             high: 100
         };
+        let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+        let autoSpinInterval;
+        let autoSpinCount = 0;
         
         // DOM Elements
         const authScreen = document.getElementById('authScreen');
@@ -428,11 +464,11 @@
         const balanceDisplay = document.getElementById('balance');
         const messageBox = document.getElementById('messageBox');
         
-        // Error message elements
-        const loginUsernameError = document.getElementById('loginUsernameError');
-        const loginPasswordError = document.getElementById('loginPasswordError');
-        const signupUsernameError = document.getElementById('signupUsernameError');
-        const signupPasswordError = document.getElementById('signupPasswordError');
+        // Sound Elements
+        const spinSound = document.getElementById('spinSound');
+        const winSound = document.getElementById('winSound');
+        const loseSound = document.getElementById('loseSound');
+        const coinSound = document.getElementById('coinSound');
         
         // Load saved data
         function loadData() {
@@ -446,12 +482,19 @@
                 bets = JSON.parse(savedBets);
                 updateBetDisplays();
             }
+            
+            const savedLeaderboard = localStorage.getItem('leaderboard');
+            if (savedLeaderboard) {
+                leaderboard = JSON.parse(savedLeaderboard);
+                displayLeaderboard();
+            }
         }
         
         // Save data
         function saveData() {
             localStorage.setItem('slotUsers', JSON.stringify(users));
             localStorage.setItem('slotBets', JSON.stringify(bets));
+            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
         }
         
         // Update bet amount displays
@@ -472,6 +515,12 @@
             }, 3000);
         }
         
+        // Play sound
+        function playSound(sound) {
+            sound.currentTime = 0;
+            sound.play();
+        }
+        
         // Update balance display
         function updateBalance() {
             if (currentUser) {
@@ -480,39 +529,43 @@
             }
         }
         
-        // Clear error messages
-        function clearErrors() {
-            loginUsernameError.style.display = 'none';
-            loginPasswordError.style.display = 'none';
-            signupUsernameError.style.display = 'none';
-            signupPasswordError.style.display = 'none';
+        // Leaderboard functions
+        function updateLeaderboard(winnerName, winAmount) {
+            leaderboard.push({ name: winnerName, score: winAmount });
+            leaderboard.sort((a, b) => b.score - a.score);
+            leaderboard = leaderboard.slice(0, 5);
+            saveData();
+            displayLeaderboard();
+        }
+        
+        function displayLeaderboard() {
+            const leaderboardList = document.getElementById('leaderboardList');
+            leaderboardList.innerHTML = '';
+            
+            leaderboard.forEach((player, index) => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span>${index + 1}. ${player.name}</span>
+                    <span>${player.score} chips</span>
+                `;
+                leaderboardList.appendChild(li);
+            });
         }
         
         // Login function
         function login(username, password) {
-            clearErrors();
-            
-            if (!username) {
-                loginUsernameError.textContent = "Username is required";
-                loginUsernameError.style.display = 'block';
-                return false;
-            }
-            
-            if (!password) {
-                loginPasswordError.textContent = "Password is required";
-                loginPasswordError.style.display = 'block';
+            if (!username || !password) {
+                showMessage("Please enter both username and password", true);
                 return false;
             }
             
             if (!users[username]) {
-                loginUsernameError.textContent = "Username not found";
-                loginUsernameError.style.display = 'block';
+                showMessage("Username not found", true);
                 return false;
             }
             
             if (users[username].password !== password) {
-                loginPasswordError.textContent = "Incorrect password";
-                loginPasswordError.style.display = 'block';
+                showMessage("Incorrect password", true);
                 return false;
             }
             
@@ -520,45 +573,25 @@
             authScreen.style.display = 'none';
             gameScreen.style.display = 'block';
             updateBalance();
-            
-            // Save last user
             localStorage.setItem('lastUser', currentUser);
-            
             showMessage(`Welcome back, ${username}!`);
             return true;
         }
         
         // Signup function
         function signup(username, password) {
-            clearErrors();
-            
-            if (!username) {
-                signupUsernameError.textContent = "Username is required";
-                signupUsernameError.style.display = 'block';
-                return false;
-            }
-            
             if (username.length < 3) {
-                signupUsernameError.textContent = "Username must be at least 3 characters";
-                signupUsernameError.style.display = 'block';
-                return false;
-            }
-            
-            if (!password) {
-                signupPasswordError.textContent = "Password is required";
-                signupPasswordError.style.display = 'block';
+                showMessage("Username must be at least 3 characters", true);
                 return false;
             }
             
             if (password.length < 4) {
-                signupPasswordError.textContent = "Password must be at least 4 characters";
-                signupPasswordError.style.display = 'block';
+                showMessage("Password must be at least 4 characters", true);
                 return false;
             }
             
             if (users[username]) {
-                signupUsernameError.textContent = "Username already exists";
-                signupUsernameError.style.display = 'block';
+                showMessage("Username already exists", true);
                 return false;
             }
             
@@ -572,11 +605,8 @@
             gameScreen.style.display = 'block';
             updateBalance();
             saveData();
-            
-            // Save last user
             localStorage.setItem('lastUser', currentUser);
-            
-            showMessage(`Account created successfully, ${username}! You start with 100 chips.`);
+            showMessage(`Account created, ${username}! Start with 100 chips.`);
             return true;
         }
         
@@ -587,45 +617,46 @@
             authScreen.style.display = 'block';
             loginForm.style.display = 'block';
             signupForm.style.display = 'none';
-            
-            // Clear form fields
             document.getElementById('loginUsername').value = '';
             document.getElementById('loginPassword').value = '';
             document.getElementById('signupUsername').value = '';
             document.getElementById('signupPassword').value = '';
-            
-            // Clear last user
             localStorage.removeItem('lastUser');
         }
         
         // Adjust bet amount
         function adjustBet(level, direction) {
-            const range = betRanges[level];
+            const range = {
+                low: { min: 1, max: 10, step: 1 },
+                medium: { min: 10, max: 25, step: 5 },
+                high: { min: 50, max: 250, step: 25 }
+            }[level];
+            
             let newBet = bets[level] + (direction === 'up' ? range.step : -range.step);
-            
-            // Clamp within range
             newBet = Math.max(range.min, Math.min(range.max, newBet));
-            
             bets[level] = newBet;
             updateBetDisplays();
             saveData();
+            playSound(coinSound);
         }
         
         // Spin the slots
         function spin(level) {
-            if (!currentUser) return;
+            if (!currentUser) return false;
             
             const bet = bets[level];
             const user = users[currentUser];
             
             if (user.balance < bet) {
                 showMessage("Not enough chips to bet!", true);
-                return;
+                playSound(loseSound);
+                return false;
             }
             
             // Deduct bet
             user.balance -= bet;
             updateBalance();
+            playSound(coinSound);
             
             // Get slot elements
             const slots = [
@@ -636,6 +667,10 @@
             
             // Disable buttons during spin
             document.getElementById(`spin${level.charAt(0).toUpperCase() + level.slice(1)}`).disabled = true;
+            document.getElementById(`autoSpin${level.charAt(0).toUpperCase() + level.slice(1)}`).disabled = true;
+            
+            // Play spin sound
+            playSound(spinSound);
             
             // Add spinning animation
             slots.forEach(slot => slot.classList.add('spinning'));
@@ -666,8 +701,11 @@
                     // Check for win
                     checkWin(results, level);
                     
-                    // Re-enable button
+                    // Re-enable buttons
                     document.getElementById(`spin${level.charAt(0).toUpperCase() + level.slice(1)}`).disabled = false;
+                    document.getElementById(`autoSpin${level.charAt(0).toUpperCase() + level.slice(1)}`).disabled = false;
+                    
+                    return true;
                 }
             }, 100);
         }
@@ -684,31 +722,71 @@
                 user.balance += winAmount;
                 updateBalance();
                 
+                // Add to leaderboard for significant wins
+                if (winAmount >= 100) {
+                    updateLeaderboard(currentUser, winAmount);
+                }
+                
                 // Win animation
                 document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                    .forEach(slot => slot.classList.add('win'));
+                    .forEach(slot => {
+                        slot.classList.add('win');
+                        if (multiplier >= 5) slot.classList.add('jackpot');
+                    });
+                
                 setTimeout(() => {
                     document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                        .forEach(slot => slot.classList.remove('win'));
+                        .forEach(slot => {
+                            slot.classList.remove('win');
+                            slot.classList.remove('jackpot');
+                        });
                 }, 1500);
                 
+                playSound(winSound);
                 showMessage(`JACKPOT! You won ${winAmount} chips! ${resultStr} pays ${multiplier}x!`);
             } else {
+                playSound(loseSound);
                 showMessage("No win this time. Try again!");
             }
+        }
+        
+        // Auto spin function
+        function autoSpin(level) {
+            if (autoSpinInterval) {
+                stopAutoSpin();
+                return;
+            }
+            
+            autoSpinCount = 5;
+            document.getElementById(`autoSpin${level.charAt(0).toUpperCase() + level.slice(1)}`).textContent = "STOP AUTO SPIN";
+            
+            autoSpinInterval = setInterval(() => {
+                if (autoSpinCount > 0 && users[currentUser].balance >= bets[level]) {
+                    const didSpin = spin(level);
+                    if (didSpin) autoSpinCount--;
+                } else {
+                    stopAutoSpin();
+                }
+            }, 1500);
+        }
+        
+        function stopAutoSpin() {
+            clearInterval(autoSpinInterval);
+            autoSpinInterval = null;
+            document.querySelectorAll('.auto-spin-btn').forEach(btn => {
+                btn.textContent = "AUTO SPIN (5x)";
+            });
         }
         
         // Event Listeners
         showLogin.addEventListener('click', () => {
             loginForm.style.display = 'block';
             signupForm.style.display = 'none';
-            clearErrors();
         });
         
         showSignup.addEventListener('click', () => {
             signupForm.style.display = 'block';
             loginForm.style.display = 'none';
-            clearErrors();
         });
         
         loginBtn.addEventListener('click', () => {
@@ -738,10 +816,15 @@
         document.getElementById('spinMedium').addEventListener('click', () => spin('medium'));
         document.getElementById('spinHigh').addEventListener('click', () => spin('high'));
         
+        // Auto-spin buttons
+        document.getElementById('autoSpinLow').addEventListener('click', () => autoSpin('low'));
+        document.getElementById('autoSpinMedium').addEventListener('click', () => autoSpin('medium'));
+        document.getElementById('autoSpinHigh').addEventListener('click', () => autoSpin('high'));
+        
         // Initialize
         loadData();
         
-        // Check if already logged in (for page refresh)
+        // Check if already logged in
         const lastUser = localStorage.getItem('lastUser');
         if (lastUser && users[lastUser]) {
             currentUser = lastUser;
@@ -750,37 +833,21 @@
             updateBalance();
         }
         
-        // Allow form submission with Enter key
+        // Enter key submission
         document.getElementById('loginUsername').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const username = document.getElementById('loginUsername').value.trim();
-                const password = document.getElementById('loginPassword').value;
-                login(username, password);
-            }
+            if (e.key === 'Enter') loginBtn.click();
         });
         
         document.getElementById('loginPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const username = document.getElementById('loginUsername').value.trim();
-                const password = document.getElementById('loginPassword').value;
-                login(username, password);
-            }
+            if (e.key === 'Enter') loginBtn.click();
         });
         
         document.getElementById('signupUsername').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const username = document.getElementById('signupUsername').value.trim();
-                const password = document.getElementById('signupPassword').value;
-                signup(username, password);
-            }
+            if (e.key === 'Enter') signupBtn.click();
         });
         
         document.getElementById('signupPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const username = document.getElementById('signupUsername').value.trim();
-                const password = document.getElementById('signupPassword').value;
-                signup(username, password);
-            }
+            if (e.key === 'Enter') signupBtn.click();
         });
     </script>
 </body>

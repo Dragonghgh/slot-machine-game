@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucky Slots Casino</title>
+    <title>Lucky Slots Deluxe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         :root {
             --primary: #e63946;
@@ -12,6 +13,8 @@
             --light: #f1faee;
             --gold: #ffd166;
             --success: #06d6a0;
+            --neon-pink: #ff00ff;
+            --neon-blue: #00ffff;
         }
         
         * {
@@ -22,7 +25,8 @@
         }
         
         body {
-            background: url('https://images.unsplash.com/photo-1596838132731-3301c3fd4317') center/cover no-repeat fixed;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url('https://images.unsplash.com/photo-1596838132731-3301c3fd4317') center/cover no-repeat fixed;
             color: white;
             min-height: 100vh;
             display: flex;
@@ -34,11 +38,34 @@
         .container {
             width: 100%;
             max-width: 900px;
-            background: rgba(29, 53, 87, 0.9);
+            background: rgba(29, 53, 87, 0.95);
             border-radius: 15px;
             padding: 30px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
             border: 3px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Glow effect */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            background: linear-gradient(45deg, var(--neon-pink), var(--neon-blue));
+            z-index: -1;
+            filter: blur(20px);
+            opacity: 0.3;
+            animation: glow 3s linear infinite;
+        }
+        
+        @keyframes glow {
+            0% { opacity: 0.3; }
+            50% { opacity: 0.5; }
+            100% { opacity: 0.3; }
         }
         
         /* Login/Signup Screen */
@@ -51,6 +78,7 @@
             color: var(--gold);
             margin-bottom: 30px;
             font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(255, 209, 102, 0.7);
         }
         
         .auth-form {
@@ -59,48 +87,10 @@
             gap: 20px;
             max-width: 400px;
             margin: 0 auto;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            text-align: left;
-        }
-        
-        input {
-            padding: 12px 15px;
-            border-radius: 5px;
-            border: none;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.9);
-        }
-        
-        button {
-            background: var(--gold);
-            color: var(--dark);
-            border: none;
-            padding: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        button:hover {
-            background: #ffdf80;
-            transform: translateY(-2px);
-        }
-        
-        .toggle-auth {
-            margin-top: 20px;
-            background: none;
-            color: var(--light);
-            text-decoration: underline;
-            font-size: 0.9rem;
-            cursor: pointer;
-            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 25px;
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
         }
         
         /* Game Screen */
@@ -115,11 +105,16 @@
             margin-bottom: 30px;
             flex-wrap: wrap;
             gap: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid var(--gold);
         }
         
         h1 {
             color: var(--gold);
             font-size: 2rem;
+            text-shadow: 0 0 5px var(--gold);
         }
         
         .user-info {
@@ -134,6 +129,7 @@
             padding: 10px 20px;
             border-radius: 50px;
             font-weight: bold;
+            border: 1px solid var(--gold);
         }
         
         .logout-btn {
@@ -141,16 +137,34 @@
             color: white;
             padding: 8px 15px;
             font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        
+        .logout-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 10px var(--primary);
         }
         
         /* Slot Machine */
         .slot-machine {
-            background: linear-gradient(145deg, #f8f9fa, #e9ecef);
+            background: linear-gradient(145deg, #2a3a4e, #1d2a3a);
             border-radius: 10px;
             padding: 20px;
-            margin-bottom: 20px;
-            border: 8px solid #333;
-            color: var(--dark);
+            margin-bottom: 30px;
+            border: 4px solid #444;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slot-machine::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(to right, transparent, var(--gold), transparent);
         }
         
         .machine-header {
@@ -164,7 +178,8 @@
         
         .machine-header h2 {
             font-size: 1.5rem;
-            color: var(--dark);
+            color: var(--light);
+            text-shadow: 0 0 5px white;
         }
         
         .bet-controls {
@@ -180,6 +195,7 @@
             color: white;
             padding: 5px 15px;
             border-radius: 5px;
+            border: 1px solid var(--gold);
         }
         
         .bet-btn {
@@ -192,6 +208,15 @@
             justify-content: center;
             padding: 0;
             font-size: 1rem;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .bet-btn:hover {
+            transform: scale(1.1);
+            background: var(--primary);
         }
         
         .slots {
@@ -199,6 +224,7 @@
             justify-content: center;
             gap: 15px;
             margin: 30px 0;
+            position: relative;
         }
         
         .slot {
@@ -210,8 +236,38 @@
             justify-content: center;
             background: white;
             border-radius: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
             border: 3px solid #555;
+            transition: transform 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slot::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+            pointer-events: none;
+        }
+        
+        .slot-info {
+            position: absolute;
+            bottom: -25px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.7rem;
+            color: var(--gold);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .slot:hover .slot-info {
+            opacity: 1;
         }
         
         .spin-btn {
@@ -226,15 +282,22 @@
             border-radius: 5px;
             cursor: pointer;
             transition: all 0.3s;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
         
         .spin-btn:hover {
             transform: scale(1.05);
+            box-shadow: 0 0 15px var(--primary);
         }
         
         .spin-btn:disabled {
             background: #cccccc;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
         
         .auto-spin-btn {
@@ -251,6 +314,82 @@
             text-align: center;
             font-weight: bold;
             display: none;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+        
+        /* Bonus Round Styling */
+        .bonus-round {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 0.5s;
+        }
+        
+        .bonus-content {
+            background: linear-gradient(45deg, #1d3557, #457b9d);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 500px;
+            border: 3px solid var(--gold);
+            box-shadow: 0 0 30px var(--gold);
+        }
+        
+        .bonus-content h2 {
+            color: var(--gold);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--gold);
+        }
+        
+        .bonus-slots {
+            display: flex;
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .bonus-slot {
+            font-size: 5rem;
+            width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+        }
+        
+        .bonus-btn {
+            background: var(--gold);
+            color: var(--dark);
+            border: none;
+            padding: 12px 25px;
+            font-size: 1.2rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+        
+        .bonus-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 15px var(--gold);
         }
         
         /* Leaderboard */
@@ -259,12 +398,14 @@
             padding: 15px;
             border-radius: 10px;
             margin-top: 20px;
+            border: 1px solid var(--gold);
         }
         
         .leaderboard h3 {
             color: var(--gold);
             margin-bottom: 10px;
             text-align: center;
+            font-size: 1.3rem;
         }
         
         #leaderboardList {
@@ -279,6 +420,12 @@
             border-radius: 5px;
             display: flex;
             justify-content: space-between;
+            transition: all 0.3s;
+        }
+        
+        #leaderboardList li:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(5px);
         }
         
         /* Animations */
@@ -310,13 +457,56 @@
         .jackpot {
             animation: jackpot 0.5s 3;
         }
+        
+        /* Tooltip */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .slot {
+                width: 80px;
+                height: 80px;
+                font-size: 3rem;
+            }
+            
+            .bonus-slot {
+                width: 80px;
+                height: 80px;
+                font-size: 3rem;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <!-- Authentication Screen -->
         <div class="auth-screen" id="authScreen">
-            <h1>🎰 Lucky Slots Casino 🎰</h1>
+            <h1>🎰 Lucky Slots Deluxe 🎰</h1>
             <div class="auth-form" id="loginForm">
                 <h2>Login to Play</h2>
                 <div class="form-group">
@@ -349,12 +539,17 @@
         <!-- Game Screen -->
         <div class="game-screen" id="gameScreen">
             <header>
-                <h1>Lucky Slots</h1>
+                <h1>Lucky Slots Deluxe</h1>
                 <div class="user-info">
                     <div class="balance">Balance: <span id="balance">100</span> chips</div>
                     <button class="logout-btn" id="logoutBtn">Logout</button>
                 </div>
             </header>
+            
+            <!-- Jackpot Display -->
+            <div class="jackpot-display" style="text-align: center; margin-bottom: 20px; font-size: 1.2rem;">
+                🏆 Progressive Jackpot: <span id="jackpot">1000</span> chips 🏆
+            </div>
             
             <!-- Low Stakes Machine -->
             <div class="slot-machine">
@@ -367,9 +562,18 @@
                     </div>
                 </div>
                 <div class="slots">
-                    <div class="slot" id="low1">🍒</div>
-                    <div class="slot" id="low2">🍒</div>
-                    <div class="slot" id="low3">🍒</div>
+                    <div class="slot tooltip" id="low1">
+                        🍒
+                        <span class="tooltiptext">Cherries: Match 3 to win 3x your bet</span>
+                    </div>
+                    <div class="slot tooltip" id="low2">
+                        🍋
+                        <span class="tooltiptext">Lemons: Match 3 to win 4x your bet</span>
+                    </div>
+                    <div class="slot tooltip" id="low3">
+                        🍊
+                        <span class="tooltiptext">Oranges: Match 3 to win 5x your bet</span>
+                    </div>
                 </div>
                 <button class="spin-btn" id="spinLow">SPIN</button>
                 <button class="spin-btn auto-spin-btn" id="autoSpinLow">AUTO SPIN (5x)</button>
@@ -386,9 +590,18 @@
                     </div>
                 </div>
                 <div class="slots">
-                    <div class="slot" id="medium1">🍒</div>
-                    <div class="slot" id="medium2">🍒</div>
-                    <div class="slot" id="medium3">🍒</div>
+                    <div class="slot tooltip" id="medium1">
+                        🍇
+                        <span class="tooltiptext">Grapes: Match 3 to win 7x your bet</span>
+                    </div>
+                    <div class="slot tooltip" id="medium2">
+                        🍉
+                        <span class="tooltiptext">Watermelon: Match 3 to win 10x your bet</span>
+                    </div>
+                    <div class="slot tooltip" id="medium3">
+                        ️7️⃣
+                        <span class="tooltiptext">7's: Match 3 to win 20x your bet</span>
+                    </div>
                 </div>
                 <button class="spin-btn" id="spinMedium">SPIN</button>
                 <button class="spin-btn auto-spin-btn" id="autoSpinMedium">AUTO SPIN (5x)</button>
@@ -405,9 +618,18 @@
                     </div>
                 </div>
                 <div class="slots">
-                    <div class="slot" id="high1">🍒</div>
-                    <div class="slot" id="high2">🍒</div>
-                    <div class="slot" id="high3">🍒</div>
+                    <div class="slot tooltip" id="high1">
+                        💎
+                        <span class="tooltiptext">Diamond: Triggers bonus round when matched</span>
+                    </div>
+                    <div class="slot tooltip" id="high2">
+                        🍀
+                        <span class="tooltiptext">Clover: Lucky symbol - increases win chance</span>
+                    </div>
+                    <div class="slot tooltip" id="high3">
+                        🏆
+                        <span class="tooltiptext">Trophy: Win the progressive jackpot!</span>
+                    </div>
                 </div>
                 <button class="spin-btn" id="spinHigh">SPIN</button>
                 <button class="spin-btn auto-spin-btn" id="autoSpinHigh">AUTO SPIN (5x)</button>
@@ -425,21 +647,45 @@
         </div>
     </div>
 
+    <!-- Bonus Round Screen (hidden by default) -->
+    <div class="bonus-round" id="bonusRound" style="display: none;">
+        <div class="bonus-content">
+            <h2>BONUS ROUND!</h2>
+            <p>You've won <span id="freeSpinsCount">5</span> free spins with 3x multipliers!</p>
+            <div class="bonus-slots">
+                <div class="bonus-slot" id="bonusSlot1">🍒</div>
+                <div class="bonus-slot" id="bonusSlot2">🍒</div>
+                <div class="bonus-slot" id="bonusSlot3">🍒</div>
+            </div>
+            <div>
+                <p>Spins remaining: <span id="spinsRemaining">5</span></p>
+                <p>Bonus wins: <span id="bonusWins">0</span> chips</p>
+            </div>
+            <button class="bonus-btn" id="bonusSpinBtn">SPIN</button>
+        </div>
+    </div>
+
     <!-- Sound Effects -->
     <audio id="spinSound" src="https://assets.mixkit.co/sfx/preview/mixkit-slot-machine-spin-1930.mp3"></audio>
     <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3"></audio>
     <audio id="loseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-retro-game-over-213.mp3"></audio>
     <audio id="coinSound" src="https://assets.mixkit.co/sfx/preview/mixkit-coins-handling-1939.mp3"></audio>
+    <audio id="bonusSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3"></audio>
+    <audio id="jackpotSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3"></audio>
 
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
         // Game Data
-        const symbols = ['🍒', '🍋', '🍊', '🍇', '🍉', '7️⃣'];
-        // Increased payout multipliers and added more winning combinations
-        const payouts = {
-            '🍒🍒🍒': 3, '🍋🍋🍋': 4, '🍊🍊🍊': 5,
-            '🍇🍇🍇': 7, '🍉🍉🍉': 10, '7️⃣7️⃣7️⃣': 20,
-            '🍒🍒🍋': 2, '🍋🍋🍊': 2, '🍊🍊🍇': 2,
-            '🍇🍇🍉': 2, '🍉🍉7️⃣': 2, '🍒🍋🍊': 1.5
+        const symbols = {
+            '🍒': { name: 'Cherry', payout: 3, description: 'Match 3 to win 3x your bet' },
+            '🍋': { name: 'Lemon', payout: 4, description: 'Match 3 to win 4x your bet' },
+            '🍊': { name: 'Orange', payout: 5, description: 'Match 3 to win 5x your bet' },
+            '🍇': { name: 'Grape', payout: 7, description: 'Match 3 to win 7x your bet' },
+            '🍉': { name: 'Watermelon', payout: 10, description: 'Match 3 to win 10x your bet' },
+            '7️⃣': { name: 'Seven', payout: 20, description: 'Match 3 to win 20x your bet' },
+            '💎': { name: 'Diamond', payout: 0, description: 'Triggers bonus round when matched' },
+            '🍀': { name: 'Clover', payout: 0, description: 'Lucky symbol - increases win chance' },
+            '🏆': { name: 'Trophy', payout: 0, description: 'Win the progressive jackpot!' }
         };
         
         // Game State
@@ -453,6 +699,10 @@
         let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
         let autoSpinInterval;
         let autoSpinCount = 0;
+        let jackpot = 1000;
+        let bonusRoundActive = false;
+        let freeSpins = 0;
+        let bonusWins = 0;
         
         // DOM Elements
         const authScreen = document.getElementById('authScreen');
@@ -466,12 +716,20 @@
         const logoutBtn = document.getElementById('logoutBtn');
         const balanceDisplay = document.getElementById('balance');
         const messageBox = document.getElementById('messageBox');
+        const jackpotDisplay = document.getElementById('jackpot');
+        const bonusRound = document.getElementById('bonusRound');
+        const freeSpinsCount = document.getElementById('freeSpinsCount');
+        const spinsRemaining = document.getElementById('spinsRemaining');
+        const bonusWinsDisplay = document.getElementById('bonusWins');
+        const bonusSpinBtn = document.getElementById('bonusSpinBtn');
         
         // Sound Elements
         const spinSound = document.getElementById('spinSound');
         const winSound = document.getElementById('winSound');
         const loseSound = document.getElementById('loseSound');
         const coinSound = document.getElementById('coinSound');
+        const bonusSound = document.getElementById('bonusSound');
+        const jackpotSound = document.getElementById('jackpotSound');
         
         // Load saved data
         function loadData() {
@@ -491,6 +749,12 @@
                 leaderboard = JSON.parse(savedLeaderboard);
                 displayLeaderboard();
             }
+            
+            const savedJackpot = localStorage.getItem('jackpot');
+            if (savedJackpot) {
+                jackpot = parseInt(savedJackpot);
+                jackpotDisplay.textContent = jackpot;
+            }
         }
         
         // Save data
@@ -498,6 +762,7 @@
             localStorage.setItem('slotUsers', JSON.stringify(users));
             localStorage.setItem('slotBets', JSON.stringify(bets));
             localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
+            localStorage.setItem('jackpot', jackpot);
         }
         
         // Update bet amount displays
@@ -530,6 +795,14 @@
                 balanceDisplay.textContent = users[currentUser].balance;
                 saveData();
             }
+        }
+        
+        // Update jackpot
+        function updateJackpot() {
+            // Add 1% of each bet to the jackpot
+            jackpot += Math.floor(bets.high * 0.01);
+            jackpotDisplay.textContent = jackpot;
+            saveData();
         }
         
         // Leaderboard functions
@@ -631,7 +904,7 @@
         function adjustBet(level, direction) {
             const range = {
                 low: { min: 1, max: 10, step: 1 },
-                medium: { min: 10, max: 25, step: 5 },
+                medium: { min: 10, max: 50, step: 5 },
                 high: { min: 50, max: 250, step: 25 }
             }[level];
             
@@ -643,9 +916,9 @@
             playSound(coinSound);
         }
         
-        // Spin the slots - modified to increase winning chances
+        // Spin the slots - with adjusted odds
         function spin(level) {
-            if (!currentUser) return false;
+            if (!currentUser || bonusRoundActive) return false;
             
             const bet = bets[level];
             const user = users[currentUser];
@@ -659,6 +932,7 @@
             // Deduct bet
             user.balance -= bet;
             updateBalance();
+            updateJackpot();
             playSound(coinSound);
             
             // Get slot elements
@@ -682,7 +956,8 @@
             let spins = 0;
             const spinInterval = setInterval(() => {
                 slots.forEach(slot => {
-                    slot.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    const randomSymbol = getWeightedRandomSymbol(level);
+                    slot.textContent = randomSymbol;
                 });
                 
                 spins++;
@@ -692,30 +967,36 @@
                     // Remove spinning animation
                     slots.forEach(slot => slot.classList.remove('spinning'));
                     
-                    // Final result - modified to increase winning chances
+                    // Final result with adjusted odds
                     const results = [];
-                    // 40% chance of getting a winning combination
-                    if (Math.random() < 0.4) {
+                    // 30% chance of getting a winning combination (was 40%)
+                    if (Math.random() < 0.3) {
                         // Choose a random winning combination
-                        const winningCombos = Object.keys(payouts);
-                        const combo = winningCombos[Math.floor(Math.random() * winningCombos.length)];
+                        const winningSymbols = Object.keys(symbols).filter(sym => symbols[sym].payout > 0);
+                        const symbol = winningSymbols[Math.floor(Math.random() * winningSymbols.length)];
                         
-                        // Split the combo into individual symbols
-                        if (combo.length === 3) {
-                            results[0] = combo[0];
-                            results[1] = combo[1];
-                            results[2] = combo[2];
+                        // 60% chance of full match, 40% chance of partial match
+                        if (Math.random() < 0.6) {
+                            // Full match
+                            results[0] = symbol;
+                            results[1] = symbol;
+                            results[2] = symbol;
                         } else {
-                            // For emoji combinations (each emoji is 2 chars)
-                            results[0] = combo.substring(0, 2);
-                            results[1] = combo.substring(2, 4);
-                            results[2] = combo.substring(4, 6);
+                            // Partial match (two of the same)
+                            results[0] = symbol;
+                            results[1] = symbol;
+                            results[2] = getWeightedRandomSymbol(level, symbol); // Ensure third is different
                         }
                     } else {
                         // Regular random results
-                        results[0] = symbols[Math.floor(Math.random() * symbols.length)];
-                        results[1] = symbols[Math.floor(Math.random() * symbols.length)];
-                        results[2] = symbols[Math.floor(Math.random() * symbols.length)];
+                        results[0] = getWeightedRandomSymbol(level);
+                        results[1] = getWeightedRandomSymbol(level);
+                        results[2] = getWeightedRandomSymbol(level);
+                    }
+                    
+                    // Check for bonus trigger (diamonds)
+                    if (results.filter(s => s === '💎').length >= 3 && level === 'high') {
+                        startBonusRound(5); // 5 free spins
                     }
                     
                     slots.forEach((slot, i) => slot.textContent = results[i]);
@@ -732,47 +1013,125 @@
             }, 100);
         }
         
-        // Check if won - modified to include partial matches
+        // Weighted random symbol generator (makes some symbols appear more often)
+        function getWeightedRandomSymbol(level, exclude = null) {
+            const weights = {
+                'low': {
+                    '🍒': 30,
+                    '🍋': 25,
+                    '🍊': 20,
+                    '🍇': 15,
+                    '🍉': 8,
+                    '7️⃣': 2
+                },
+                'medium': {
+                    '🍒': 20,
+                    '🍋': 20,
+                    '🍊': 20,
+                    '🍇': 20,
+                    '🍉': 15,
+                    '7️⃣': 5
+                },
+                'high': {
+                    '💎': 10,
+                    '🍀': 30,
+                    '🏆': 5,
+                    '🍒': 15,
+                    '🍋': 15,
+                    '🍊': 15,
+                    '🍇': 5,
+                    '🍉': 3,
+                    '7️⃣': 2
+                }
+            };
+            
+            let symbolPool = [];
+            for (const symbol in weights[level]) {
+                if (!exclude || symbol !== exclude) {
+                    for (let i = 0; i < weights[level][symbol]; i++) {
+                        symbolPool.push(symbol);
+                    }
+                }
+            }
+            
+            return symbolPool[Math.floor(Math.random() * symbolPool.length)];
+        }
+        
+        // Check if won
         function checkWin(results, level) {
             const resultStr = results.join('');
             const user = users[currentUser];
             const bet = bets[level];
+            let winAmount = 0;
             
-            // Check for exact matches first (highest payout)
-            if (results[0] === results[1] && results[1] === results[2]) {
-                const multiplier = payouts[resultStr] || 1;
-                const winAmount = bet * multiplier;
+            // Check for jackpot win (3 trophies)
+            if (results[0] === '🏆' && results[1] === '🏆' && results[2] === '🏆') {
+                winAmount = jackpot;
                 user.balance += winAmount;
+                jackpot = 1000; // Reset jackpot
+                jackpotDisplay.textContent = jackpot;
                 updateBalance();
+                updateLeaderboard(currentUser, winAmount);
                 
-                // Add to leaderboard for significant wins
-                if (winAmount >= 100) {
-                    updateLeaderboard(currentUser, winAmount);
-                }
-                
-                // Win animation
+                // Jackpot animation
                 document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                    .forEach(slot => {
-                        slot.classList.add('win');
-                        if (multiplier >= 5) slot.classList.add('jackpot');
-                    });
+                    .forEach(slot => slot.classList.add('jackpot'));
                 
                 setTimeout(() => {
                     document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                        .forEach(slot => {
-                            slot.classList.remove('win');
-                            slot.classList.remove('jackpot');
-                        });
+                        .forEach(slot => slot.classList.remove('jackpot'));
                 }, 1500);
                 
-                playSound(winSound);
-                showMessage(`JACKPOT! You won ${winAmount} chips! ${resultStr} pays ${multiplier}x!`);
+                playSound(jackpotSound);
+                showMessage(`JACKPOT!!! You won ${winAmount} chips!`, false);
+                confetti({ particleCount: 200, spread: 100 });
+                return;
+            }
+            
+            // Check for exact matches first (highest payout)
+            if (results[0] === results[1] && results[1] === results[2]) {
+                const symbol = symbols[results[0]];
+                if (symbol.payout > 0) {
+                    winAmount = bet * symbol.payout;
+                    user.balance += winAmount;
+                    updateBalance();
+                    
+                    // Add to leaderboard for significant wins
+                    if (winAmount >= 100) {
+                        updateLeaderboard(currentUser, winAmount);
+                    }
+                    
+                    // Win animation
+                    document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
+                        .forEach(slot => {
+                            slot.classList.add('win');
+                            if (symbol.payout >= 5) slot.classList.add('jackpot');
+                        });
+                    
+                    setTimeout(() => {
+                        document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
+                            .forEach(slot => {
+                                slot.classList.remove('win');
+                                slot.classList.remove('jackpot');
+                            });
+                    }, 1500);
+                    
+                    playSound(winSound);
+                    showMessage(`${symbol.name} WIN! You won ${winAmount} chips! ${resultStr} pays ${symbol.payout}x!`);
+                    
+                    // Small chance of confetti for big wins
+                    if (winAmount >= bet * 10) {
+                        confetti({ particleCount: 100, spread: 70 });
+                    }
+                }
             } 
             // Check for two matching symbols
             else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
-                const multiplier = payouts[`${results[0]}${results[1]}${results[2]}`] || 1;
-                const winAmount = Math.floor(bet * multiplier * 0.5); // Half payout for two matches
-                if (winAmount > 0) {
+                const matchedSymbol = results[0] === results[1] ? results[0] : results[2];
+                const symbol = symbols[matchedSymbol];
+                
+                if (symbol.payout > 0) {
+                    winAmount = Math.floor(bet * symbol.payout * 0.5); // Half payout for two matches
                     user.balance += winAmount;
                     updateBalance();
                     
@@ -791,30 +1150,11 @@
                     }, 1500);
                     
                     playSound(winSound);
-                    showMessage(`Partial win! You won ${winAmount} chips!`);
+                    showMessage(`Partial ${symbol.name} win! You won ${winAmount} chips!`);
                 } else {
                     playSound(loseSound);
                     showMessage("No win this time. Try again!");
                 }
-            }
-            // Check for other winning combinations (like sequences)
-            else if (payouts[resultStr]) {
-                const multiplier = payouts[resultStr];
-                const winAmount = bet * multiplier;
-                user.balance += winAmount;
-                updateBalance();
-                
-                // Win animation
-                document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                    .forEach(slot => slot.classList.add('win'));
-                
-                setTimeout(() => {
-                    document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                        .forEach(slot => slot.classList.remove('win'));
-                }, 1500);
-                
-                playSound(winSound);
-                showMessage(`Combo win! You won ${winAmount} chips! ${resultStr} pays ${multiplier}x!`);
             }
             else {
                 playSound(loseSound);
@@ -822,9 +1162,105 @@
             }
         }
         
+        // Bonus Round Functions
+        function startBonusRound(spins) {
+            bonusRoundActive = true;
+            freeSpins = spins;
+            bonusWins = 0;
+            freeSpinsCount.textContent = spins;
+            spinsRemaining.textContent = spins;
+            bonusWinsDisplay.textContent = '0';
+            bonusRound.style.display = 'flex';
+            playSound(bonusSound);
+        }
+        
+        function endBonusRound() {
+            bonusRoundActive = false;
+            bonusRound.style.display = 'none';
+            users[currentUser].balance += bonusWins;
+            updateBalance();
+            showMessage(`Bonus round complete! You won ${bonusWins} chips!`);
+        }
+        
+        function spinBonus() {
+            if (freeSpins <= 0) {
+                endBonusRound();
+                return;
+            }
+            
+            const slots = [
+                document.getElementById('bonusSlot1'),
+                document.getElementById('bonusSlot2'),
+                document.getElementById('bonusSlot3')
+            ];
+            
+            // Disable button during spin
+            bonusSpinBtn.disabled = true;
+            
+            // Play spin sound
+            playSound(spinSound);
+            
+            // Add spinning animation
+            slots.forEach(slot => slot.classList.add('spinning'));
+            
+            // Spin animation
+            let spins = 0;
+            const spinInterval = setInterval(() => {
+                slots.forEach(slot => {
+                    slot.textContent = getWeightedRandomSymbol('high');
+                });
+                
+                spins++;
+                if (spins >= 15) {
+                    clearInterval(spinInterval);
+                    
+                    // Remove spinning animation
+                    slots.forEach(slot => slot.classList.remove('spinning'));
+                    
+                    // Final result
+                    const results = [
+                        getWeightedRandomSymbol('high'),
+                        getWeightedRandomSymbol('high'),
+                        getWeightedRandomSymbol('high')
+                    ];
+                    
+                    slots.forEach((slot, i) => slot.textContent = results[i]);
+                    
+                    // Check for win (3x multiplier in bonus)
+                    if (results[0] === results[1] && results[1] === results[2]) {
+                        const symbol = symbols[results[0]];
+                        if (symbol.payout > 0) {
+                            const winAmount = bets.high * symbol.payout * 3; // 3x multiplier
+                            bonusWins += winAmount;
+                            bonusWinsDisplay.textContent = bonusWins;
+                            
+                            // Win animation
+                            slots.forEach(slot => slot.classList.add('win'));
+                            setTimeout(() => {
+                                slots.forEach(slot => slot.classList.remove('win'));
+                            }, 1000);
+                            
+                            playSound(winSound);
+                        }
+                    }
+                    
+                    freeSpins--;
+                    spinsRemaining.textContent = freeSpins;
+                    
+                    // Re-enable button
+                    bonusSpinBtn.disabled = false;
+                    
+                    // Auto-end if no more spins
+                    if (freeSpins <= 0) {
+                        setTimeout(endBonusRound, 1500);
+                    }
+                }
+            }, 100);
+        }
+        
         // Auto spin function
         function autoSpin(level) {
-            if (autoSpinInterval) {
+            if (autoSpinInterval || bonusRoundActive) {
                 stopAutoSpin();
                 return;
             }
@@ -892,6 +1328,9 @@
         document.getElementById('autoSpinLow').addEventListener('click', () => autoSpin('low'));
         document.getElementById('autoSpinMedium').addEventListener('click', () => autoSpin('medium'));
         document.getElementById('autoSpinHigh').addEventListener('click', () => autoSpin('high'));
+        
+        // Bonus spin button
+        bonusSpinBtn.addEventListener('click', spinBonus);
         
         // Initialize
         loadData();

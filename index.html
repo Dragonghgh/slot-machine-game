@@ -434,9 +434,12 @@
     <script>
         // Game Data
         const symbols = ['🍒', '🍋', '🍊', '🍇', '🍉', '7️⃣'];
+        // Increased payout multipliers and added more winning combinations
         const payouts = {
-            '🍒🍒🍒': 2, '🍋🍋🍋': 3, '🍊🍊🍊': 4,
-            '🍇🍇🍇': 5, '🍉🍉🍉': 7, '7️⃣7️⃣7️⃣': 10
+            '🍒🍒🍒': 3, '🍋🍋🍋': 4, '🍊🍊🍊': 5,
+            '🍇🍇🍇': 7, '🍉🍉🍉': 10, '7️⃣7️⃣7️⃣': 20,
+            '🍒🍒🍋': 2, '🍋🍋🍊': 2, '🍊🍊🍇': 2,
+            '🍇🍇🍉': 2, '🍉🍉7️⃣': 2, '🍒🍋🍊': 1.5
         };
         
         // Game State
@@ -640,7 +643,7 @@
             playSound(coinSound);
         }
         
-        // Spin the slots
+        // Spin the slots - modified to increase winning chances
         function spin(level) {
             if (!currentUser) return false;
             
@@ -689,12 +692,31 @@
                     // Remove spinning animation
                     slots.forEach(slot => slot.classList.remove('spinning'));
                     
-                    // Final result
-                    const results = [
-                        symbols[Math.floor(Math.random() * symbols.length)],
-                        symbols[Math.floor(Math.random() * symbols.length)],
-                        symbols[Math.floor(Math.random() * symbols.length)]
-                    ];
+                    // Final result - modified to increase winning chances
+                    const results = [];
+                    // 40% chance of getting a winning combination
+                    if (Math.random() < 0.4) {
+                        // Choose a random winning combination
+                        const winningCombos = Object.keys(payouts);
+                        const combo = winningCombos[Math.floor(Math.random() * winningCombos.length)];
+                        
+                        // Split the combo into individual symbols
+                        if (combo.length === 3) {
+                            results[0] = combo[0];
+                            results[1] = combo[1];
+                            results[2] = combo[2];
+                        } else {
+                            // For emoji combinations (each emoji is 2 chars)
+                            results[0] = combo.substring(0, 2);
+                            results[1] = combo.substring(2, 4);
+                            results[2] = combo.substring(4, 6);
+                        }
+                    } else {
+                        // Regular random results
+                        results[0] = symbols[Math.floor(Math.random() * symbols.length)];
+                        results[1] = symbols[Math.floor(Math.random() * symbols.length)];
+                        results[2] = symbols[Math.floor(Math.random() * symbols.length)];
+                    }
                     
                     slots.forEach((slot, i) => slot.textContent = results[i]);
                     
@@ -710,12 +732,13 @@
             }, 100);
         }
         
-        // Check if won
+        // Check if won - modified to include partial matches
         function checkWin(results, level) {
             const resultStr = results.join('');
             const user = users[currentUser];
             const bet = bets[level];
             
+            // Check for exact matches first (highest payout)
             if (results[0] === results[1] && results[1] === results[2]) {
                 const multiplier = payouts[resultStr] || 1;
                 const winAmount = bet * multiplier;
@@ -744,7 +767,56 @@
                 
                 playSound(winSound);
                 showMessage(`JACKPOT! You won ${winAmount} chips! ${resultStr} pays ${multiplier}x!`);
-            } else {
+            } 
+            // Check for two matching symbols
+            else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
+                const multiplier = payouts[`${results[0]}${results[1]}${results[2]}`] || 1;
+                const winAmount = Math.floor(bet * multiplier * 0.5); // Half payout for two matches
+                if (winAmount > 0) {
+                    user.balance += winAmount;
+                    updateBalance();
+                    
+                    // Win animation for partial win
+                    if (results[0] === results[1]) {
+                        document.querySelectorAll(`#${level}1, #${level}2`).forEach(slot => slot.classList.add('win'));
+                    } else if (results[1] === results[2]) {
+                        document.querySelectorAll(`#${level}2, #${level}3`).forEach(slot => slot.classList.add('win'));
+                    } else {
+                        document.querySelectorAll(`#${level}1, #${level}3`).forEach(slot => slot.classList.add('win'));
+                    }
+                    
+                    setTimeout(() => {
+                        document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
+                            .forEach(slot => slot.classList.remove('win'));
+                    }, 1500);
+                    
+                    playSound(winSound);
+                    showMessage(`Partial win! You won ${winAmount} chips!`);
+                } else {
+                    playSound(loseSound);
+                    showMessage("No win this time. Try again!");
+                }
+            }
+            // Check for other winning combinations (like sequences)
+            else if (payouts[resultStr]) {
+                const multiplier = payouts[resultStr];
+                const winAmount = bet * multiplier;
+                user.balance += winAmount;
+                updateBalance();
+                
+                // Win animation
+                document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
+                    .forEach(slot => slot.classList.add('win'));
+                
+                setTimeout(() => {
+                    document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
+                        .forEach(slot => slot.classList.remove('win'));
+                }, 1500);
+                
+                playSound(winSound);
+                showMessage(`Combo win! You won ${winAmount} chips! ${resultStr} pays ${multiplier}x!`);
+            }
+            else {
                 playSound(loseSound);
                 showMessage("No win this time. Try again!");
             }

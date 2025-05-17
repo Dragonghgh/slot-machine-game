@@ -126,13 +126,34 @@
             gap: 15px;
         }
         
-        .balance {
-            font-size: 1.2rem;
+        .player-stats {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+        
+        .balance, .level-display {
+            font-size: 1.1rem;
             background: rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
+            padding: 8px 15px;
             border-radius: 50px;
             font-weight: bold;
             border: 1px solid var(--gold);
+        }
+        
+        .xp-bar {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            margin-top: 5px;
+            overflow: hidden;
+        }
+        
+        .xp-progress {
+            height: 100%;
+            background: linear-gradient(to right, #48dbfb, #0abde3);
+            width: 0%;
+            transition: width 0.5s;
         }
         
         .logout-btn {
@@ -143,43 +164,20 @@
             transition: all 0.3s;
         }
         
-        .logout-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 10px var(--primary);
-        }
-        
         /* Slot Machines - Unique Themes */
-        /* Fruit Theme */
         .slot-machine.fruit-theme {
             background: linear-gradient(145deg, #ff6b6b, #ff8e8e);
             border: 4px solid #ff4757;
         }
         
-        .slot-machine.fruit-theme .machine-header h2 {
-            color: #ff4757;
-            text-shadow: 0 0 5px #ff6b6b;
-        }
-        
-        /* Gem Theme */
         .slot-machine.gem-theme {
             background: linear-gradient(145deg, #48dbfb, #0abde3);
             border: 4px solid #01a3a4;
         }
         
-        .slot-machine.gem-theme .machine-header h2 {
-            color: #01a3a4;
-            text-shadow: 0 0 5px #48dbfb;
-        }
-        
-        /* Mystery Theme */
         .slot-machine.mystery-theme {
             background: linear-gradient(145deg, #5f27cd, #341f97);
             border: 4px solid #341f97;
-        }
-        
-        .slot-machine.mystery-theme .machine-header h2 {
-            color: #a55eea;
-            text-shadow: 0 0 5px #5f27cd;
         }
         
         /* Common Slot Machine Styles */
@@ -356,23 +354,22 @@
             100% { transform: scale(1); }
         }
         
-        /* Bonus Round Styling */
-        .bonus-round {
+        /* Level Up Animation */
+        .level-up {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: rgba(0, 0, 0, 0.8);
-            z-index: 100;
+            z-index: 200;
             display: flex;
-            flex-direction: column;
             justify-content: center;
             align-items: center;
             animation: fadeIn 0.5s;
         }
         
-        .bonus-content {
+        .level-up-content {
             background: linear-gradient(45deg, #1d3557, #457b9d);
             padding: 30px;
             border-radius: 15px;
@@ -382,83 +379,11 @@
             box-shadow: 0 0 30px var(--gold);
         }
         
-        .bonus-content h2 {
+        .level-up-content h2 {
             color: var(--gold);
             font-size: 2rem;
             margin-bottom: 20px;
             text-shadow: 0 0 10px var(--gold);
-        }
-        
-        .bonus-slots {
-            display: flex;
-            gap: 20px;
-            margin: 30px 0;
-        }
-        
-        .bonus-slot {
-            font-size: 5rem;
-            width: 120px;
-            height: 120px;
-            background: white;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
-        }
-        
-        .bonus-btn {
-            background: var(--gold);
-            color: var(--dark);
-            border: none;
-            padding: 12px 25px;
-            font-size: 1.2rem;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 20px;
-            transition: all 0.3s;
-        }
-        
-        .bonus-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 15px var(--gold);
-        }
-        
-        /* Leaderboard */
-        .leaderboard {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            border: 1px solid var(--gold);
-        }
-        
-        .leaderboard h3 {
-            color: var(--gold);
-            margin-bottom: 10px;
-            text-align: center;
-            font-size: 1.3rem;
-        }
-        
-        #leaderboardList {
-            list-style-type: none;
-            padding: 0;
-        }
-        
-        #leaderboardList li {
-            padding: 8px;
-            margin: 5px 0;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            display: flex;
-            justify-content: space-between;
-            transition: all 0.3s;
-        }
-        
-        #leaderboardList li:hover {
-            background: rgba(255, 255, 255, 0.2);
-            transform: translateX(5px);
         }
         
         /* Animations */
@@ -491,34 +416,6 @@
             animation: jackpot 0.5s 3;
         }
         
-        /* Tooltip */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-        }
-        
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            transform: translateX(-50%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-        
         /* Responsive */
         @media (max-width: 768px) {
             .slot {
@@ -527,10 +424,9 @@
                 font-size: 3rem;
             }
             
-            .bonus-slot {
-                width: 80px;
-                height: 80px;
-                font-size: 3rem;
+            .player-stats {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
     </style>
@@ -574,7 +470,15 @@
             <header>
                 <h1>Lucky Slots Extreme</h1>
                 <div class="user-info">
-                    <div class="balance">Balance: <span id="balance">100</span> chips</div>
+                    <div class="player-stats">
+                        <div class="balance">Balance: <span id="balance">100</span> chips</div>
+                        <div class="level-display">
+                            <div>Level <span id="level">1</span></div>
+                            <div class="xp-bar">
+                                <div class="xp-progress" id="xpBar"></div>
+                            </div>
+                        </div>
+                    </div>
                     <button class="logout-btn" id="logoutBtn">Logout</button>
                 </div>
             </header>
@@ -701,6 +605,17 @@
         </div>
     </div>
 
+    <!-- Level Up Screen (hidden by default) -->
+    <div class="level-up" id="levelUpScreen" style="display: none;">
+        <div class="level-up-content">
+            <h2>LEVEL UP!</h2>
+            <p style="font-size: 3rem; margin: 20px 0;">🎉</p>
+            <p>You've reached level <span id="newLevel">2</span>!</p>
+            <p>New rewards unlocked!</p>
+            <button class="bonus-btn" id="levelUpBtn">Continue</button>
+        </div>
+    </div>
+
     <!-- Sound Effects -->
     <audio id="spinSound" src="https://assets.mixkit.co/sfx/preview/mixkit-slot-machine-spin-1930.mp3"></audio>
     <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3"></audio>
@@ -708,51 +623,52 @@
     <audio id="coinSound" src="https://assets.mixkit.co/sfx/preview/mixkit-coins-handling-1939.mp3"></audio>
     <audio id="bonusSound" src="https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3"></audio>
     <audio id="jackpotSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3"></audio>
+    <audio id="levelUpSound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
 
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <script>
-        // Game Data - Unique for each slot machine
+        // Game Data - Unique for each slot machine with 2x harder odds
         const slotConfigs = {
             low: {
                 name: "Fruit Fiesta",
                 theme: "fruit-theme",
                 symbols: {
-                    '🍒': { name: 'Cherry', payout: 2, weight: 30 },
-                    '🍋': { name: 'Lemon', payout: 3, weight: 25 },
-                    '🍊': { name: 'Orange', payout: 4, weight: 20 },
-                    '🍇': { name: 'Grape', payout: 5, weight: 15 },
-                    '🍉': { name: 'Watermelon', payout: 7, weight: 8 },
-                    '7️⃣': { name: 'Seven', payout: 10, weight: 2 }
+                    '🍒': { name: 'Cherry', payout: 2, weight: 25 }, // Reduced weights
+                    '🍋': { name: 'Lemon', payout: 3, weight: 20 },
+                    '🍊': { name: 'Orange', payout: 4, weight: 15 },
+                    '🍇': { name: 'Grape', payout: 5, weight: 10 },
+                    '🍉': { name: 'Watermelon', payout: 7, weight: 5 },
+                    '7️⃣': { name: 'Seven', payout: 10, weight: 1 }
                 },
-                winChance: 0.25, // 25% chance to win (harder than before)
+                winChance: 0.15, // Reduced from 0.3 (2x harder)
                 description: "Classic fruit slots - simple but rewarding!"
             },
             medium: {
                 name: "Gemstone Glory",
                 theme: "gem-theme",
                 symbols: {
-                    '💎': { name: 'Diamond', payout: 0, weight: 10, bonusTrigger: true },
-                    '🔮': { name: 'Crystal Ball', payout: 0, weight: 20, isWild: true },
-                    '💍': { name: 'Ring', payout: 10, weight: 25 },
-                    '🔱': { name: 'Trident', payout: 7, weight: 20 },
-                    '👑': { name: 'Crown', payout: 15, weight: 15 },
-                    '💰': { name: 'Money Bag', payout: 20, weight: 10 }
+                    '💎': { name: 'Diamond', payout: 0, weight: 8, bonusTrigger: true },
+                    '🔮': { name: 'Crystal Ball', payout: 0, weight: 15, isWild: true },
+                    '💍': { name: 'Ring', payout: 10, weight: 20 },
+                    '🔱': { name: 'Trident', payout: 7, weight: 15 },
+                    '👑': { name: 'Crown', payout: 15, weight: 10 },
+                    '💰': { name: 'Money Bag', payout: 20, weight: 5 }
                 },
-                winChance: 0.2, // 20% chance to win
+                winChance: 0.1, // Reduced from 0.2
                 description: "Gem slots - wild symbols and bonus triggers!"
             },
             high: {
                 name: "Mystery Vault",
                 theme: "mystery-theme",
                 symbols: {
-                    '🏆': { name: 'Trophy', payout: 0, weight: 5, isJackpot: true },
-                    '❓': { name: 'Mystery', payout: 0, weight: 30, isMystery: true },
-                    '☠️': { name: 'Skull', payout: -1, weight: 20 }, // Negative means lose bet
-                    '🤑': { name: 'Money Face', payout: 15, weight: 20 },
-                    '💸': { name: 'Money Wings', payout: 20, weight: 15 },
-                    '💰': { name: 'Money Bag', payout: 25, weight: 10 }
+                    '🏆': { name: 'Trophy', payout: 0, weight: 3, isJackpot: true },
+                    '❓': { name: 'Mystery', payout: 0, weight: 20, isMystery: true },
+                    '☠️': { name: 'Skull', payout: -1, weight: 25 }, // More skulls
+                    '🤑': { name: 'Money Face', payout: 15, weight: 15 },
+                    '💸': { name: 'Money Wings', payout: 20, weight: 10 },
+                    '💰': { name: 'Money Bag', payout: 25, weight: 5 }
                 },
-                winChance: 0.15, // Only 15% chance to win
+                winChance: 0.075, // Reduced from 0.15
                 description: "High risk, high reward - not for the faint of heart!"
             }
         };
@@ -784,6 +700,8 @@
         const signupBtn = document.getElementById('signupBtn');
         const logoutBtn = document.getElementById('logoutBtn');
         const balanceDisplay = document.getElementById('balance');
+        const levelDisplay = document.getElementById('level');
+        const xpBar = document.getElementById('xpBar');
         const messageBox = document.getElementById('messageBox');
         const jackpotDisplay = document.getElementById('jackpot');
         const bonusRound = document.getElementById('bonusRound');
@@ -791,6 +709,9 @@
         const spinsRemaining = document.getElementById('spinsRemaining');
         const bonusWinsDisplay = document.getElementById('bonusWins');
         const bonusSpinBtn = document.getElementById('bonusSpinBtn');
+        const levelUpScreen = document.getElementById('levelUpScreen');
+        const newLevelDisplay = document.getElementById('newLevel');
+        const levelUpBtn = document.getElementById('levelUpBtn');
         
         // Sound Elements
         const spinSound = document.getElementById('spinSound');
@@ -799,6 +720,7 @@
         const coinSound = document.getElementById('coinSound');
         const bonusSound = document.getElementById('bonusSound');
         const jackpotSound = document.getElementById('jackpotSound');
+        const levelUpSound = document.getElementById('levelUpSound');
         
         // Load saved data
         function loadData() {
@@ -866,6 +788,37 @@
             }
         }
         
+        // Update XP and level display
+        function updateLevelDisplay() {
+            if (currentUser) {
+                const user = users[currentUser];
+                levelDisplay.textContent = user.level;
+                xpBar.style.width = `${(user.xp / user.xpToNextLevel) * 100}%`;
+            }
+        }
+        
+        // Add XP to player
+        function addXP(amount) {
+            const user = users[currentUser];
+            user.xp += amount;
+            
+            // Check for level up
+            if (user.xp >= user.xpToNextLevel) {
+                user.level++;
+                user.xp = user.xp - user.xpToNextLevel;
+                user.xpToNextLevel = Math.floor(user.xpToNextLevel * 1.5);
+                
+                // Show level up screen
+                newLevelDisplay.textContent = user.level;
+                levelUpScreen.style.display = 'flex';
+                playSound(levelUpSound);
+                confetti({ particleCount: 100, spread: 70 });
+            }
+            
+            updateLevelDisplay();
+            saveData();
+        }
+        
         // Update jackpot
         function updateJackpot() {
             // Add 1% of each bet to the jackpot
@@ -918,6 +871,7 @@
             authScreen.style.display = 'none';
             gameScreen.style.display = 'block';
             updateBalance();
+            updateLevelDisplay();
             localStorage.setItem('lastUser', currentUser);
             showMessage(`Welcome back, ${username}!`);
             return true;
@@ -942,13 +896,19 @@
             
             users[username] = {
                 password: password,
-                balance: 100
+                balance: 100,
+                level: 1,
+                xp: 0,
+                xpToNextLevel: 100,
+                wins: 0,
+                spins: 0
             };
             
             currentUser = username;
             authScreen.style.display = 'none';
             gameScreen.style.display = 'block';
             updateBalance();
+            updateLevelDisplay();
             saveData();
             localStorage.setItem('lastUser', currentUser);
             showMessage(`Account created, ${username}! Start with 100 chips.`);
@@ -1018,6 +978,7 @@
             
             // Deduct bet
             user.balance -= bet;
+            user.spins++;
             updateBalance();
             updateJackpot();
             playSound(coinSound);
@@ -1162,10 +1123,12 @@
             if (results[0] === '🏆' && results[1] === '🏆' && results[2] === '🏆' && level === 'high') {
                 winAmount = jackpot;
                 user.balance += winAmount;
+                user.wins++;
                 jackpot = 1000; // Reset jackpot
                 jackpotDisplay.textContent = jackpot;
                 updateBalance();
                 updateLeaderboard(currentUser, winAmount);
+                addXP(50); // Big XP for jackpot
                 
                 // Jackpot animation
                 document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
@@ -1198,7 +1161,9 @@
                 
                 winAmount = bet * multiplier;
                 user.balance += winAmount;
+                user.wins++;
                 updateBalance();
+                addXP(10 * mysteryCount); // XP based on mystery symbols
                 
                 // Win animation
                 document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
@@ -1226,7 +1191,9 @@
                 if (symbol.payout > 0) {
                     winAmount = bet * symbol.payout;
                     user.balance += winAmount;
+                    user.wins++;
                     updateBalance();
+                    addXP(10); // Base XP for any win
                     
                     // Add to leaderboard for significant wins
                     if (winAmount >= 100) {
@@ -1265,7 +1232,9 @@
                 if (symbol.payout > 0) {
                     winAmount = Math.floor(bet * symbol.payout * 0.5); // Half payout for two matches
                     user.balance += winAmount;
+                    user.wins++;
                     updateBalance();
+                    addXP(5); // Half XP for partial wins
                     
                     // Win animation for partial win
                     if (results[0] === results[1]) {
@@ -1311,6 +1280,7 @@
             bonusRound.style.display = 'none';
             users[currentUser].balance += bonusWins;
             updateBalance();
+            addXP(20); // Bonus XP for completing bonus round
             showMessage(`Bonus round complete! You won ${bonusWins} chips!`);
         }
         
@@ -1464,6 +1434,11 @@
         // Bonus spin button
         bonusSpinBtn.addEventListener('click', spinBonus);
         
+        // Level up button
+        levelUpBtn.addEventListener('click', () => {
+            levelUpScreen.style.display = 'none';
+        });
+        
         // Initialize
         loadData();
         
@@ -1474,6 +1449,7 @@
             authScreen.style.display = 'none';
             gameScreen.style.display = 'block';
             updateBalance();
+            updateLevelDisplay();
         }
         
         // Enter key submission

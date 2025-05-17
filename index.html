@@ -41,82 +41,9 @@
             border: 3px solid var(--gold);
         }
         
-        /* Login/Signup Screen */
-        .auth-screen {
-            text-align: center;
-            animation: fadeIn 0.5s;
-        }
-        
-        .auth-screen h1 {
-            color: var(--gold);
-            margin-bottom: 30px;
-            font-size: 2.5rem;
-        }
-        
-        .auth-form {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            max-width: 400px;
-            margin: 0 auto;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-            text-align: left;
-        }
-        
-        label {
-            font-weight: bold;
-        }
-        
-        input {
-            padding: 12px 15px;
-            border-radius: 5px;
-            border: none;
-            font-size: 1rem;
-            background: rgba(255, 255, 255, 0.9);
-        }
-        
-        button {
-            background: var(--gold);
-            color: var(--dark);
-            border: none;
-            padding: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-        
-        button:hover {
-            background: #ffdf80;
-            transform: translateY(-2px);
-        }
-        
-        .toggle-auth {
-            margin-top: 20px;
-            background: none;
-            color: var(--light);
-            text-decoration: underline;
-            font-size: 0.9rem;
-            border: none;
-            cursor: pointer;
-        }
-        
-        .error-message {
-            color: #ff6b6b;
-            font-size: 0.9rem;
-            margin-top: -15px;
-            display: none;
-        }
-        
         /* Game Screen */
         .game-screen {
-            display: none;
+            display: block;
         }
         
         header {
@@ -133,25 +60,12 @@
             font-size: 2rem;
         }
         
-        .user-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-        
         .balance {
             font-size: 1.2rem;
             background: rgba(255, 255, 255, 0.1);
             padding: 10px 20px;
             border-radius: 50px;
             font-weight: bold;
-        }
-        
-        .logout-btn {
-            background: var(--primary);
-            color: white;
-            padding: 8px 15px;
-            font-size: 0.9rem;
         }
         
         /* Slot Machine */
@@ -193,18 +107,6 @@
             border-radius: 5px;
         }
         
-        .bet-btn {
-            background: var(--secondary);
-            color: white;
-            width: 30px;
-            height: 30px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 0;
-            font-size: 1rem;
-        }
-        
         .slots {
             display: flex;
             justify-content: center;
@@ -232,9 +134,27 @@
             font-size: 1.2rem;
             padding: 15px;
             background: linear-gradient(to right, var(--primary), #f4a261);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
         }
         
-        /* Message Box */
+        .spin-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .spin-btn:disabled {
+            background: #cccccc;
+            cursor: not-allowed;
+        }
+        
+        .auto-spin-btn {
+            background: var(--secondary);
+            margin-top: 10px;
+        }
+        
         .message-box {
             background: rgba(255, 255, 255, 0.9);
             color: var(--dark);
@@ -247,11 +167,6 @@
         }
         
         /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-        
         @keyframes spin {
             0% { transform: rotateX(0deg); }
             100% { transform: rotateX(360deg); }
@@ -271,6 +186,16 @@
             animation: win 0.5s 3;
         }
         
+        @keyframes jackpot {
+            0% { transform: scale(1); color: black; }
+            50% { transform: scale(1.2); color: red; }
+            100% { transform: scale(1); color: black; }
+        }
+        
+        .jackpot {
+            animation: jackpot 0.5s 3;
+        }
+        
         /* Responsive */
         @media (max-width: 600px) {
             .slot {
@@ -287,50 +212,11 @@
 </head>
 <body>
     <div class="container">
-        <!-- Authentication Screen -->
-        <div class="auth-screen" id="authScreen">
-            <h1>🎰 Lucky Slots Casino 🎰</h1>
-            <div class="auth-form" id="loginForm">
-                <h2>Login to Play</h2>
-                <div class="form-group">
-                    <label for="loginUsername">Username</label>
-                    <input type="text" id="loginUsername" placeholder="Enter your username">
-                    <div class="error-message" id="loginUsernameError"></div>
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword" placeholder="Enter your password">
-                    <div class="error-message" id="loginPasswordError"></div>
-                </div>
-                <button id="loginBtn">Login</button>
-                <button class="toggle-auth" id="showSignup">Don't have an account? Sign up</button>
-            </div>
-            
-            <div class="auth-form" id="signupForm" style="display: none;">
-                <h2>Create Account</h2>
-                <div class="form-group">
-                    <label for="signupUsername">Username</label>
-                    <input type="text" id="signupUsername" placeholder="Choose a username (min 3 chars)">
-                    <div class="error-message" id="signupUsernameError"></div>
-                </div>
-                <div class="form-group">
-                    <label for="signupPassword">Password</label>
-                    <input type="password" id="signupPassword" placeholder="Choose a password (min 4 chars)">
-                    <div class="error-message" id="signupPasswordError"></div>
-                </div>
-                <button id="signupBtn">Create Account</button>
-                <button class="toggle-auth" id="showLogin">Already have an account? Login</button>
-            </div>
-        </div>
-        
         <!-- Game Screen -->
-        <div class="game-screen" id="gameScreen">
+        <div class="game-screen">
             <header>
-                <h1>Lucky Slots</h1>
-                <div class="user-info">
-                    <div class="balance">Balance: <span id="balance">100</span> chips</div>
-                    <button class="logout-btn" id="logoutBtn">Logout</button>
-                </div>
+                <h1>🎰 Lucky Slots 🎰</h1>
+                <div class="balance">Balance: <span id="balance">100</span> chips</div>
             </header>
             
             <!-- Low Stakes Machine -->
@@ -349,47 +235,18 @@
                     <div class="slot" id="low3">🍒</div>
                 </div>
                 <button class="spin-btn" id="spinLow">SPIN</button>
-            </div>
-            
-            <!-- Medium Stakes Machine -->
-            <div class="slot-machine">
-                <div class="machine-header">
-                    <h2>Medium Stakes</h2>
-                    <div class="bet-controls">
-                        <button class="bet-btn" id="mediumBetDown">-</button>
-                        <div class="bet-amount">Bet: <span id="mediumBet">25</span></div>
-                        <button class="bet-btn" id="mediumBetUp">+</button>
-                    </div>
-                </div>
-                <div class="slots">
-                    <div class="slot" id="medium1">🍒</div>
-                    <div class="slot" id="medium2">🍒</div>
-                    <div class="slot" id="medium3">🍒</div>
-                </div>
-                <button class="spin-btn" id="spinMedium">SPIN</button>
-            </div>
-            
-            <!-- High Stakes Machine -->
-            <div class="slot-machine">
-                <div class="machine-header">
-                    <h2>High Stakes</h2>
-                    <div class="bet-controls">
-                        <button class="bet-btn" id="highBetDown">-</button>
-                        <div class="bet-amount">Bet: <span id="highBet">100</span></div>
-                        <button class="bet-btn" id="highBetUp">+</button>
-                    </div>
-                </div>
-                <div class="slots">
-                    <div class="slot" id="high1">🍒</div>
-                    <div class="slot" id="high2">🍒</div>
-                    <div class="slot" id="high3">🍒</div>
-                </div>
-                <button class="spin-btn" id="spinHigh">SPIN</button>
+                <button class="spin-btn auto-spin-btn" id="autoSpinLow">AUTO SPIN (5x)</button>
             </div>
             
             <div class="message-box" id="messageBox"></div>
         </div>
     </div>
+
+    <!-- Sound Effects -->
+    <audio id="spinSound" src="https://assets.mixkit.co/sfx/preview/mixkit-slot-machine-spin-1930.mp3"></audio>
+    <audio id="winSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3"></audio>
+    <audio id="loseSound" src="https://assets.mixkit.co/sfx/preview/mixkit-arcade-retro-game-over-213.mp3"></audio>
+    <audio id="coinSound" src="https://assets.mixkit.co/sfx/preview/mixkit-coins-handling-1939.mp3"></audio>
 
     <script>
         // Game Data
@@ -399,243 +256,72 @@
             '🍇🍇🍇': 5, '🍉🍉🍉': 7, '7️⃣7️⃣7️⃣': 10
         };
         
-        // Bet ranges
-        const betRanges = {
-            low: { min: 1, max: 10, step: 1 },
-            medium: { min: 10, max: 25, step: 5 },
-            high: { min: 50, max: 250, step: 25 }
-        };
-        
         // Game State
-        let currentUser = null;
-        let users = {};
-        let bets = {
-            low: 5,
-            medium: 25,
-            high: 100
+        let balance = 100;
+        let autoSpinCount = 0;
+        let autoSpinInterval;
+        const bets = {
+            low: 5
         };
         
         // DOM Elements
-        const authScreen = document.getElementById('authScreen');
-        const gameScreen = document.getElementById('gameScreen');
-        const loginForm = document.getElementById('loginForm');
-        const signupForm = document.getElementById('signupForm');
-        const showLogin = document.getElementById('showLogin');
-        const showSignup = document.getElementById('showSignup');
-        const loginBtn = document.getElementById('loginBtn');
-        const signupBtn = document.getElementById('signupBtn');
-        const logoutBtn = document.getElementById('logoutBtn');
         const balanceDisplay = document.getElementById('balance');
         const messageBox = document.getElementById('messageBox');
         
-        // Error message elements
-        const loginUsernameError = document.getElementById('loginUsernameError');
-        const loginPasswordError = document.getElementById('loginPasswordError');
-        const signupUsernameError = document.getElementById('signupUsernameError');
-        const signupPasswordError = document.getElementById('signupPasswordError');
+        // Sound Elements
+        const spinSound = document.getElementById('spinSound');
+        const winSound = document.getElementById('winSound');
+        const loseSound = document.getElementById('loseSound');
+        const coinSound = document.getElementById('coinSound');
         
-        // Load saved data
-        function loadData() {
-            const savedUsers = localStorage.getItem('slotUsers');
-            if (savedUsers) {
-                users = JSON.parse(savedUsers);
-            }
-            
-            const savedBets = localStorage.getItem('slotBets');
-            if (savedBets) {
-                bets = JSON.parse(savedBets);
-                updateBetDisplays();
-            }
+        // Update balance display
+        function updateBalance() {
+            balanceDisplay.textContent = balance;
         }
         
-        // Save data
-        function saveData() {
-            localStorage.setItem('slotUsers', JSON.stringify(users));
-            localStorage.setItem('slotBets', JSON.stringify(bets));
-        }
-        
-        // Update bet amount displays
-        function updateBetDisplays() {
-            document.getElementById('lowBet').textContent = bets.low;
-            document.getElementById('mediumBet').textContent = bets.medium;
-            document.getElementById('highBet').textContent = bets.high;
+        // Play sound
+        function playSound(sound) {
+            sound.currentTime = 0;
+            sound.play();
         }
         
         // Show message
-        function showMessage(message, isError = false) {
+        function showMessage(message, isWin = false) {
             messageBox.textContent = message;
             messageBox.style.display = 'block';
-            messageBox.style.backgroundColor = isError ? 'rgba(230, 57, 70, 0.9)' : 'rgba(255, 255, 255, 0.9)';
+            messageBox.style.backgroundColor = isWin ? 'rgba(6, 214, 160, 0.9)' : 'rgba(255, 255, 255, 0.9)';
             
             setTimeout(() => {
                 messageBox.style.display = 'none';
             }, 3000);
         }
         
-        // Update balance display
-        function updateBalance() {
-            if (currentUser) {
-                balanceDisplay.textContent = users[currentUser].balance;
-                saveData();
-            }
-        }
-        
-        // Clear error messages
-        function clearErrors() {
-            loginUsernameError.style.display = 'none';
-            loginPasswordError.style.display = 'none';
-            signupUsernameError.style.display = 'none';
-            signupPasswordError.style.display = 'none';
-        }
-        
-        // Login function
-        function login(username, password) {
-            clearErrors();
-            
-            if (!username) {
-                loginUsernameError.textContent = "Username is required";
-                loginUsernameError.style.display = 'block';
-                return false;
-            }
-            
-            if (!password) {
-                loginPasswordError.textContent = "Password is required";
-                loginPasswordError.style.display = 'block';
-                return false;
-            }
-            
-            if (!users[username]) {
-                loginUsernameError.textContent = "Username not found";
-                loginUsernameError.style.display = 'block';
-                return false;
-            }
-            
-            if (users[username].password !== password) {
-                loginPasswordError.textContent = "Incorrect password";
-                loginPasswordError.style.display = 'block';
-                return false;
-            }
-            
-            currentUser = username;
-            authScreen.style.display = 'none';
-            gameScreen.style.display = 'block';
-            updateBalance();
-            
-            // Save last user
-            localStorage.setItem('lastUser', currentUser);
-            
-            showMessage(`Welcome back, ${username}!`);
-            return true;
-        }
-        
-        // Signup function
-        function signup(username, password) {
-            clearErrors();
-            
-            if (!username) {
-                signupUsernameError.textContent = "Username is required";
-                signupUsernameError.style.display = 'block';
-                return false;
-            }
-            
-            if (username.length < 3) {
-                signupUsernameError.textContent = "Username must be at least 3 characters";
-                signupUsernameError.style.display = 'block';
-                return false;
-            }
-            
-            if (!password) {
-                signupPasswordError.textContent = "Password is required";
-                signupPasswordError.style.display = 'block';
-                return false;
-            }
-            
-            if (password.length < 4) {
-                signupPasswordError.textContent = "Password must be at least 4 characters";
-                signupPasswordError.style.display = 'block';
-                return false;
-            }
-            
-            if (users[username]) {
-                signupUsernameError.textContent = "Username already exists";
-                signupUsernameError.style.display = 'block';
-                return false;
-            }
-            
-            users[username] = {
-                password: password,
-                balance: 100
-            };
-            
-            currentUser = username;
-            authScreen.style.display = 'none';
-            gameScreen.style.display = 'block';
-            updateBalance();
-            saveData();
-            
-            // Save last user
-            localStorage.setItem('lastUser', currentUser);
-            
-            showMessage(`Account created successfully, ${username}! You start with 100 chips.`);
-            return true;
-        }
-        
-        // Logout function
-        function logout() {
-            currentUser = null;
-            gameScreen.style.display = 'none';
-            authScreen.style.display = 'block';
-            loginForm.style.display = 'block';
-            signupForm.style.display = 'none';
-            
-            // Clear form fields
-            document.getElementById('loginUsername').value = '';
-            document.getElementById('loginPassword').value = '';
-            document.getElementById('signupUsername').value = '';
-            document.getElementById('signupPassword').value = '';
-            
-            // Clear last user
-            localStorage.removeItem('lastUser');
-        }
-        
-        // Adjust bet amount
-        function adjustBet(level, direction) {
-            const range = betRanges[level];
-            let newBet = bets[level] + (direction === 'up' ? range.step : -range.step);
-            
-            // Clamp within range
-            newBet = Math.max(range.min, Math.min(range.max, newBet));
-            
-            bets[level] = newBet;
-            updateBetDisplays();
-            saveData();
-        }
-        
         // Spin the slots
-        function spin(level) {
-            if (!currentUser) return;
-            
-            const bet = bets[level];
-            const user = users[currentUser];
-            
-            if (user.balance < bet) {
-                showMessage("Not enough chips to bet!", true);
-                return;
+        function spin() {
+            if (balance < bets.low) {
+                showMessage("Not enough chips to bet!", false);
+                playSound(loseSound);
+                return false;
             }
             
             // Deduct bet
-            user.balance -= bet;
+            balance -= bets.low;
             updateBalance();
+            playSound(coinSound);
             
             // Get slot elements
             const slots = [
-                document.getElementById(`${level}1`),
-                document.getElementById(`${level}2`),
-                document.getElementById(`${level}3`)
+                document.getElementById('low1'),
+                document.getElementById('low2'),
+                document.getElementById('low3')
             ];
             
             // Disable buttons during spin
-            document.getElementById(`spin${level.charAt(0).toUpperCase() + level.slice(1)}`).disabled = true;
+            document.getElementById('spinLow').disabled = true;
+            document.getElementById('autoSpinLow').disabled = true;
+            
+            // Play spin sound
+            playSound(spinSound);
             
             // Add spinning animation
             slots.forEach(slot => slot.classList.add('spinning'));
@@ -664,124 +350,96 @@
                     slots.forEach((slot, i) => slot.textContent = results[i]);
                     
                     // Check for win
-                    checkWin(results, level);
+                    checkWin(results);
                     
-                    // Re-enable button
-                    document.getElementById(`spin${level.charAt(0).toUpperCase() + level.slice(1)}`).disabled = false;
+                    // Re-enable buttons
+                    document.getElementById('spinLow').disabled = false;
+                    document.getElementById('autoSpinLow').disabled = false;
+                    
+                    return true;
                 }
             }, 100);
         }
         
+        // Auto spin function
+        function autoSpin() {
+            if (autoSpinInterval) {
+                stopAutoSpin();
+                return;
+            }
+            
+            autoSpinCount = 5; // Spin 5 times
+            document.getElementById('autoSpinLow').textContent = "STOP AUTO SPIN";
+            
+            autoSpinInterval = setInterval(() => {
+                if (autoSpinCount > 0 && balance >= bets.low) {
+                    const didSpin = spin();
+                    if (didSpin) autoSpinCount--;
+                } else {
+                    stopAutoSpin();
+                }
+            }, 1500); // 1.5 seconds between spins
+        }
+        
+        // Stop auto spin
+        function stopAutoSpin() {
+            clearInterval(autoSpinInterval);
+            autoSpinInterval = null;
+            document.getElementById('autoSpinLow').textContent = "AUTO SPIN (5x)";
+        }
+        
         // Check if won
-        function checkWin(results, level) {
+        function checkWin(results) {
             const resultStr = results.join('');
-            const user = users[currentUser];
-            const bet = bets[level];
             
             if (results[0] === results[1] && results[1] === results[2]) {
                 const multiplier = payouts[resultStr] || 1;
-                const winAmount = bet * multiplier;
-                user.balance += winAmount;
+                const winAmount = bets.low * multiplier;
+                balance += winAmount;
                 updateBalance();
                 
-                // Win animation
-                document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                    .forEach(slot => slot.classList.add('win'));
+                // Win animation and sound
+                document.querySelectorAll('#low1, #low2, #low3')
+                    .forEach(slot => {
+                        slot.classList.add('win');
+                        if (multiplier >= 5) slot.classList.add('jackpot');
+                    });
+                
                 setTimeout(() => {
-                    document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                        .forEach(slot => slot.classList.remove('win'));
+                    document.querySelectorAll('#low1, #low2, #low3')
+                        .forEach(slot => {
+                            slot.classList.remove('win');
+                            slot.classList.remove('jackpot');
+                        });
                 }, 1500);
                 
-                showMessage(`JACKPOT! You won ${winAmount} chips! ${resultStr} pays ${multiplier}x!`);
+                playSound(winSound);
+                showMessage(`You won ${winAmount} chips! ${resultStr} pays ${multiplier}x!`, true);
             } else {
-                showMessage("No win this time. Try again!");
+                playSound(loseSound);
+                showMessage("No win this time. Try again!", false);
             }
         }
         
         // Event Listeners
-        showLogin.addEventListener('click', () => {
-            loginForm.style.display = 'block';
-            signupForm.style.display = 'none';
-            clearErrors();
-        });
-        
-        showSignup.addEventListener('click', () => {
-            signupForm.style.display = 'block';
-            loginForm.style.display = 'none';
-            clearErrors();
-        });
-        
-        loginBtn.addEventListener('click', () => {
-            const username = document.getElementById('loginUsername').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            login(username, password);
-        });
-        
-        signupBtn.addEventListener('click', () => {
-            const username = document.getElementById('signupUsername').value.trim();
-            const password = document.getElementById('signupPassword').value;
-            signup(username, password);
-        });
-        
-        logoutBtn.addEventListener('click', logout);
+        document.getElementById('spinLow').addEventListener('click', spin);
+        document.getElementById('autoSpinLow').addEventListener('click', autoSpin);
         
         // Bet adjustment buttons
-        document.getElementById('lowBetUp').addEventListener('click', () => adjustBet('low', 'up'));
-        document.getElementById('lowBetDown').addEventListener('click', () => adjustBet('low', 'down'));
-        document.getElementById('mediumBetUp').addEventListener('click', () => adjustBet('medium', 'up'));
-        document.getElementById('mediumBetDown').addEventListener('click', () => adjustBet('medium', 'down'));
-        document.getElementById('highBetUp').addEventListener('click', () => adjustBet('high', 'up'));
-        document.getElementById('highBetDown').addEventListener('click', () => adjustBet('high', 'down'));
+        document.getElementById('lowBetUp').addEventListener('click', () => {
+            bets.low = Math.min(10, bets.low + 1);
+            document.getElementById('lowBet').textContent = bets.low;
+            playSound(coinSound);
+        });
         
-        // Spin buttons
-        document.getElementById('spinLow').addEventListener('click', () => spin('low'));
-        document.getElementById('spinMedium').addEventListener('click', () => spin('medium'));
-        document.getElementById('spinHigh').addEventListener('click', () => spin('high'));
+        document.getElementById('lowBetDown').addEventListener('click', () => {
+            bets.low = Math.max(1, bets.low - 1);
+            document.getElementById('lowBet').textContent = bets.low;
+            playSound(coinSound);
+        });
         
         // Initialize
-        loadData();
-        
-        // Check if already logged in (for page refresh)
-        const lastUser = localStorage.getItem('lastUser');
-        if (lastUser && users[lastUser]) {
-            currentUser = lastUser;
-            authScreen.style.display = 'none';
-            gameScreen.style.display = 'block';
-            updateBalance();
-        }
-        
-        // Allow form submission with Enter key
-        document.getElementById('loginUsername').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const username = document.getElementById('loginUsername').value.trim();
-                const password = document.getElementById('loginPassword').value;
-                login(username, password);
-            }
-        });
-        
-        document.getElementById('loginPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const username = document.getElementById('loginUsername').value.trim();
-                const password = document.getElementById('loginPassword').value;
-                login(username, password);
-            }
-        });
-        
-        document.getElementById('signupUsername').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const username = document.getElementById('signupUsername').value.trim();
-                const password = document.getElementById('signupPassword').value;
-                signup(username, password);
-            }
-        });
-        
-        document.getElementById('signupPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                const username = document.getElementById('signupUsername').value.trim();
-                const password = document.getElementById('signupPassword').value;
-                signup(username, password);
-            }
-        });
+        updateBalance();
     </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lucky Slots Extreme</title>
+    <title>Lucky Slots Extreme - Multiplayer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <style>
         :root {
@@ -50,7 +50,6 @@
             overflow: hidden;
         }
         
-        /* Glow effect */
         .container::before {
             content: '';
             position: absolute;
@@ -71,7 +70,90 @@
             100% { opacity: 0.3; }
         }
         
-        /* Login/Signup Screen */
+        /* Multiplayer Panel Styles */
+        .multiplayer-panel {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            border: 1px solid var(--secondary);
+            box-shadow: 0 0 15px rgba(69, 123, 157, 0.5);
+        }
+
+        .multiplayer-panel h3 {
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 15px;
+            text-shadow: 0 0 5px var(--gold);
+        }
+
+        #roomControls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+
+        .multiplayer-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .multiplayer-btn:hover {
+            background: var(--primary);
+            transform: scale(1.05);
+        }
+
+        .join-container {
+            display: flex;
+            gap: 5px;
+        }
+
+        #roomCodeInput {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--gold);
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            min-width: 150px;
+        }
+
+        .player-list {
+            margin-top: 15px;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+        }
+
+        .player-list h4 {
+            margin-bottom: 10px;
+            color: var(--gold);
+        }
+
+        .player-list ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .player-list li {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            align-items: center;
+        }
+
+        .player-list li:before {
+            content: "👤";
+            margin-right: 10px;
+        }
+
+        /* Rest of your existing styles... */
         .auth-screen {
             text-align: center;
             animation: fadeIn 0.5s;
@@ -96,7 +178,6 @@
             backdrop-filter: blur(5px);
         }
         
-        /* Game Screen */
         .game-screen {
             display: none;
         }
@@ -164,7 +245,6 @@
             transition: all 0.3s;
         }
         
-        /* Slot Machines - Unique Themes */
         .slot-machine.fruit-theme {
             background: linear-gradient(145deg, #ff6b6b, #ff8e8e);
             border: 4px solid #ff4757;
@@ -180,7 +260,6 @@
             border: 4px solid #341f97;
         }
         
-        /* Common Slot Machine Styles */
         .slot-machine {
             border-radius: 10px;
             padding: 20px;
@@ -354,7 +433,6 @@
             100% { transform: scale(1); }
         }
         
-        /* Level Up Animation */
         .level-up {
             position: fixed;
             top: 0;
@@ -386,7 +464,6 @@
             text-shadow: 0 0 10px var(--gold);
         }
         
-        /* Animations */
         @keyframes spin {
             0% { transform: rotateX(0deg); }
             100% { transform: rotateX(360deg); }
@@ -416,7 +493,6 @@
             animation: jackpot 0.5s 3;
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
             .slot {
                 width: 80px;
@@ -483,96 +559,39 @@
                 </div>
             </header>
             
+            <!-- Multiplayer Panel -->
+            <div class="multiplayer-panel">
+                <h3>🎮 Multiplayer Mode 🎮</h3>
+                <div id="roomControls">
+                    <button id="createRoomBtn" class="multiplayer-btn">Create Room</button>
+                    <div class="join-container">
+                        <input type="text" id="roomCodeInput" placeholder="Enter room code">
+                        <button id="joinRoomBtn" class="multiplayer-btn">Join</button>
+                    </div>
+                    <button id="startGameBtn" class="multiplayer-btn" disabled>Start Game</button>
+                </div>
+                <div class="player-list">
+                    <h4>Players (<span id="playerCount">0</span>/4):</h4>
+                    <ul id="playerList"></ul>
+                </div>
+            </div>
+            
             <!-- Jackpot Display -->
             <div class="jackpot-display" style="text-align: center; margin-bottom: 20px; font-size: 1.2rem;">
                 🏆 Progressive Jackpot: <span id="jackpot">1000</span> chips 🏆
             </div>
             
-            <!-- Fruit Theme Slot Machine (Low Stakes) -->
+            <!-- Slot Machines (same as before) -->
             <div class="slot-machine fruit-theme">
-                <div class="machine-header">
-                    <h2>Fruit Fiesta</h2>
-                    <div class="bet-controls">
-                        <button class="bet-btn" id="lowBetDown">-</button>
-                        <div class="bet-amount">Bet: <span id="lowBet">5</span></div>
-                        <button class="bet-btn" id="lowBetUp">+</button>
-                    </div>
-                </div>
-                <div class="slots">
-                    <div class="slot tooltip" id="low1">
-                        🍒
-                        <span class="tooltiptext">Cherries: Match 3 to win 2x your bet</span>
-                    </div>
-                    <div class="slot tooltip" id="low2">
-                        🍋
-                        <span class="tooltiptext">Lemons: Match 3 to win 3x your bet</span>
-                    </div>
-                    <div class="slot tooltip" id="low3">
-                        🍊
-                        <span class="tooltiptext">Oranges: Match 3 to win 4x your bet</span>
-                    </div>
-                </div>
-                <button class="spin-btn" id="spinLow">SPIN</button>
-                <button class="spin-btn auto-spin-btn" id="autoSpinLow">AUTO SPIN (5x)</button>
-                <div class="slot-info">Classic fruit slots - simple but rewarding!</div>
+                <!-- ... (keep your existing slot machine HTML) ... -->
             </div>
             
-            <!-- Gem Theme Slot Machine (Medium Stakes) -->
             <div class="slot-machine gem-theme">
-                <div class="machine-header">
-                    <h2>Gemstone Glory</h2>
-                    <div class="bet-controls">
-                        <button class="bet-btn" id="mediumBetDown">-</button>
-                        <div class="bet-amount">Bet: <span id="mediumBet">25</span></div>
-                        <button class="bet-btn" id="mediumBetUp">+</button>
-                    </div>
-                </div>
-                <div class="slots">
-                    <div class="slot tooltip" id="medium1">
-                        💎
-                        <span class="tooltiptext">Diamond: Triggers bonus round when matched</span>
-                    </div>
-                    <div class="slot tooltip" id="medium2">
-                        🔮
-                        <span class="tooltiptext">Crystal Ball: Wild symbol - substitutes for others</span>
-                    </div>
-                    <div class="slot tooltip" id="medium3">
-                        💍
-                        <span class="tooltiptext">Ring: Match 3 to win 10x your bet</span>
-                    </div>
-                </div>
-                <button class="spin-btn" id="spinMedium">SPIN</button>
-                <button class="spin-btn auto-spin-btn" id="autoSpinMedium">AUTO SPIN (5x)</button>
-                <div class="slot-info">Gem slots - wild symbols and bonus triggers!</div>
+                <!-- ... (keep your existing slot machine HTML) ... -->
             </div>
             
-            <!-- Mystery Theme Slot Machine (High Stakes) -->
             <div class="slot-machine mystery-theme">
-                <div class="machine-header">
-                    <h2>Mystery Vault</h2>
-                    <div class="bet-controls">
-                        <button class="bet-btn" id="highBetDown">-</button>
-                        <div class="bet-amount">Bet: <span id="highBet">100</span></div>
-                        <button class="bet-btn" id="highBetUp">+</button>
-                    </div>
-                </div>
-                <div class="slots">
-                    <div class="slot tooltip" id="high1">
-                        🏆
-                        <span class="tooltiptext">Trophy: Win the progressive jackpot!</span>
-                    </div>
-                    <div class="slot tooltip" id="high2">
-                        ❓
-                        <span class="tooltiptext">Mystery: Random multiplier (2x-20x)</span>
-                    </div>
-                    <div class="slot tooltip" id="high3">
-                        ☠️
-                        <span class="tooltiptext">Skull: Lose your bet if matched</span>
-                    </div>
-                </div>
-                <button class="spin-btn" id="spinHigh">SPIN</button>
-                <button class="spin-btn auto-spin-btn" id="autoSpinHigh">AUTO SPIN (5x)</button>
-                <div class="slot-info">High risk, high reward - not for the faint of heart!</div>
+                <!-- ... (keep your existing slot machine HTML) ... -->
             </div>
             
             <div class="message-box" id="messageBox"></div>
@@ -589,31 +608,12 @@
 
     <!-- Bonus Round Screen (hidden by default) -->
     <div class="bonus-round" id="bonusRound" style="display: none;">
-        <div class="bonus-content">
-            <h2>BONUS ROUND!</h2>
-            <p>You've won <span id="freeSpinsCount">5</span> free spins with 3x multipliers!</p>
-            <div class="bonus-slots">
-                <div class="bonus-slot" id="bonusSlot1">💎</div>
-                <div class="bonus-slot" id="bonusSlot2">💎</div>
-                <div class="bonus-slot" id="bonusSlot3">💎</div>
-            </div>
-            <div>
-                <p>Spins remaining: <span id="spinsRemaining">5</span></p>
-                <p>Bonus wins: <span id="bonusWins">0</span> chips</p>
-            </div>
-            <button class="bonus-btn" id="bonusSpinBtn">SPIN</button>
-        </div>
+        <!-- ... (keep your existing bonus round HTML) ... -->
     </div>
 
     <!-- Level Up Screen (hidden by default) -->
     <div class="level-up" id="levelUpScreen" style="display: none;">
-        <div class="level-up-content">
-            <h2>LEVEL UP!</h2>
-            <p style="font-size: 3rem; margin: 20px 0;">🎉</p>
-            <p>You've reached level <span id="newLevel">2</span>!</p>
-            <p>New rewards unlocked!</p>
-            <button class="bonus-btn" id="levelUpBtn">Continue</button>
-        </div>
+        <!-- ... (keep your existing level up HTML) ... -->
     </div>
 
     <!-- Sound Effects -->
@@ -625,22 +625,44 @@
     <audio id="jackpotSound" src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3"></audio>
     <audio id="levelUpSound" src="https://assets.mixkit.co/sfx/preview/mixkit-unlock-game-notification-253.mp3"></audio>
 
+    <!-- Firebase and Confetti -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-auth-compat.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+
     <script>
-        // Game Data - Unique for each slot machine with 2x harder odds
+        // ==================== FIREBASE SETUP ====================
+        // REPLACE THESE VALUES WITH YOUR ACTUAL FIREBASE CONFIG
+        const firebaseConfig = {
+            apiKey: "AIzaSyCAGhW1W0Lvif6DUwZMkxMuUxW4IF51s70"
+  authDomain: "lucky-slots-multiplayer.firebaseapp.com"
+  projectId: "lucky-slots-multiplayer",
+  storageBucket: "lucky-slots-multiplayer.firebasestorage.app"
+  messagingSenderId: "862559494769"
+  appId: "1:862559494769:web:a37ac6132adc3a76e071d0"
+  measurementId: "G-66D5589ZPH"
+        };
+
+        // Initialize Firebase
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+
+        // ==================== GAME CONFIGURATION ====================
         const slotConfigs = {
             low: {
                 name: "Fruit Fiesta",
                 theme: "fruit-theme",
                 symbols: {
-                    '🍒': { name: 'Cherry', payout: 2, weight: 25 }, // Reduced weights
+                    '🍒': { name: 'Cherry', payout: 2, weight: 25 },
                     '🍋': { name: 'Lemon', payout: 3, weight: 20 },
                     '🍊': { name: 'Orange', payout: 4, weight: 15 },
                     '🍇': { name: 'Grape', payout: 5, weight: 10 },
                     '🍉': { name: 'Watermelon', payout: 7, weight: 5 },
                     '7️⃣': { name: 'Seven', payout: 10, weight: 1 }
                 },
-                winChance: 0.15, // Reduced from 0.3 (2x harder)
+                winChance: 0.15,
                 description: "Classic fruit slots - simple but rewarding!"
             },
             medium: {
@@ -654,7 +676,7 @@
                     '👑': { name: 'Crown', payout: 15, weight: 10 },
                     '💰': { name: 'Money Bag', payout: 20, weight: 5 }
                 },
-                winChance: 0.1, // Reduced from 0.2
+                winChance: 0.1,
                 description: "Gem slots - wild symbols and bonus triggers!"
             },
             high: {
@@ -663,33 +685,39 @@
                 symbols: {
                     '🏆': { name: 'Trophy', payout: 0, weight: 3, isJackpot: true },
                     '❓': { name: 'Mystery', payout: 0, weight: 20, isMystery: true },
-                    '☠️': { name: 'Skull', payout: -1, weight: 25 }, // More skulls
+                    '☠️': { name: 'Skull', payout: -1, weight: 25 },
                     '🤑': { name: 'Money Face', payout: 15, weight: 15 },
                     '💸': { name: 'Money Wings', payout: 20, weight: 10 },
                     '💰': { name: 'Money Bag', payout: 25, weight: 5 }
                 },
-                winChance: 0.075, // Reduced from 0.15
+                winChance: 0.075,
                 description: "High risk, high reward - not for the faint of heart!"
             }
         };
-        
-        // Game State
+
+        // ==================== GAME STATE ====================
         let currentUser = null;
         let users = {};
-        let bets = {
-            low: 5,
-            medium: 25,
-            high: 100
-        };
-        let leaderboard = JSON.parse(localStorage.getItem('leaderboard')) || [];
+        let bets = { low: 5, medium: 25, high: 100 };
+        let leaderboard = [];
         let autoSpinInterval;
         let autoSpinCount = 0;
         let jackpot = 1000;
         let bonusRoundActive = false;
         let freeSpins = 0;
         let bonusWins = 0;
-        
-        // DOM Elements
+
+        // Multiplayer state
+        const multiplayer = {
+            roomId: null,
+            players: [],
+            currentTurn: null,
+            gameStarted: false,
+            maxPlayers: 4,
+            minPlayers: 2
+        };
+
+        // ==================== DOM ELEMENTS ====================
         const authScreen = document.getElementById('authScreen');
         const gameScreen = document.getElementById('gameScreen');
         const loginForm = document.getElementById('loginForm');
@@ -712,8 +740,16 @@
         const levelUpScreen = document.getElementById('levelUpScreen');
         const newLevelDisplay = document.getElementById('newLevel');
         const levelUpBtn = document.getElementById('levelUpBtn');
-        
-        // Sound Elements
+
+        // Multiplayer elements
+        const createRoomBtn = document.getElementById('createRoomBtn');
+        const joinRoomBtn = document.getElementById('joinRoomBtn');
+        const roomCodeInput = document.getElementById('roomCodeInput');
+        const startGameBtn = document.getElementById('startGameBtn');
+        const playerList = document.getElementById('playerList');
+        const playerCount = document.getElementById('playerCount');
+
+        // Sound elements
         const spinSound = document.getElementById('spinSound');
         const winSound = document.getElementById('winSound');
         const loseSound = document.getElementById('loseSound');
@@ -721,250 +757,166 @@
         const bonusSound = document.getElementById('bonusSound');
         const jackpotSound = document.getElementById('jackpotSound');
         const levelUpSound = document.getElementById('levelUpSound');
-        
-        // Load saved data
-        function loadData() {
-            const savedUsers = localStorage.getItem('slotUsers');
-            if (savedUsers) {
-                users = JSON.parse(savedUsers);
-            }
-            
-            const savedBets = localStorage.getItem('slotBets');
-            if (savedBets) {
-                bets = JSON.parse(savedBets);
-                updateBetDisplays();
-            }
-            
-            const savedLeaderboard = localStorage.getItem('leaderboard');
-            if (savedLeaderboard) {
-                leaderboard = JSON.parse(savedLeaderboard);
-                displayLeaderboard();
-            }
-            
-            const savedJackpot = localStorage.getItem('jackpot');
-            if (savedJackpot) {
-                jackpot = parseInt(savedJackpot);
-                jackpotDisplay.textContent = jackpot;
-            }
-        }
-        
-        // Save data
-        function saveData() {
-            localStorage.setItem('slotUsers', JSON.stringify(users));
-            localStorage.setItem('slotBets', JSON.stringify(bets));
-            localStorage.setItem('leaderboard', JSON.stringify(leaderboard));
-            localStorage.setItem('jackpot', jackpot);
-        }
-        
-        // Update bet amount displays
-        function updateBetDisplays() {
-            document.getElementById('lowBet').textContent = bets.low;
-            document.getElementById('mediumBet').textContent = bets.medium;
-            document.getElementById('highBet').textContent = bets.high;
-        }
-        
-        // Show message
-        function showMessage(message, isError = false) {
-            messageBox.textContent = message;
-            messageBox.style.display = 'block';
-            messageBox.style.backgroundColor = isError ? 'rgba(230, 57, 70, 0.9)' : 'rgba(255, 255, 255, 0.9)';
-            
-            setTimeout(() => {
-                messageBox.style.display = 'none';
-            }, 3000);
-        }
-        
-        // Play sound
-        function playSound(sound) {
-            sound.currentTime = 0;
-            sound.play();
-        }
-        
-        // Update balance display
-        function updateBalance() {
-            if (currentUser) {
-                balanceDisplay.textContent = users[currentUser].balance;
-                saveData();
-            }
-        }
-        
-        // Update XP and level display
-        function updateLevelDisplay() {
-            if (currentUser) {
-                const user = users[currentUser];
-                levelDisplay.textContent = user.level;
-                xpBar.style.width = `${(user.xp / user.xpToNextLevel) * 100}%`;
-            }
-        }
-        
-        // Add XP to player
-        function addXP(amount) {
-            const user = users[currentUser];
-            user.xp += amount;
-            
-            // Check for level up
-            if (user.xp >= user.xpToNextLevel) {
-                user.level++;
-                user.xp = user.xp - user.xpToNextLevel;
-                user.xpToNextLevel = Math.floor(user.xpToNextLevel * 1.5);
+
+        // ==================== MULTIPLAYER FUNCTIONS ====================
+        async function createRoom() {
+            try {
+                const roomRef = await db.collection('rooms').add({
+                    creator: currentUser,
+                    players: [currentUser],
+                    gameStarted: false,
+                    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    currentTurn: null,
+                    jackpot: 1000
+                });
                 
-                // Show level up screen
-                newLevelDisplay.textContent = user.level;
-                levelUpScreen.style.display = 'flex';
-                playSound(levelUpSound);
-                confetti({ particleCount: 100, spread: 70 });
+                multiplayer.roomId = roomRef.id;
+                localStorage.setItem('lastRoom', multiplayer.roomId);
+                listenToRoomChanges();
+                showMessage(`🎉 Room created! Share this code: ${multiplayer.roomId}`);
+                createRoomBtn.disabled = true;
+                joinRoomBtn.disabled = true;
+            } catch (error) {
+                showMessage("Error creating room: " + error.message, true);
             }
-            
-            updateLevelDisplay();
-            saveData();
         }
-        
-        // Update jackpot
-        function updateJackpot() {
-            // Add 1% of each bet to the jackpot
-            jackpot += Math.floor(bets.high * 0.01);
-            jackpotDisplay.textContent = jackpot;
-            saveData();
-        }
-        
-        // Leaderboard functions
-        function updateLeaderboard(winnerName, winAmount) {
-            leaderboard.push({ name: winnerName, score: winAmount });
-            leaderboard.sort((a, b) => b.score - a.score);
-            leaderboard = leaderboard.slice(0, 5);
-            saveData();
-            displayLeaderboard();
-        }
-        
-        function displayLeaderboard() {
-            const leaderboardList = document.getElementById('leaderboardList');
-            leaderboardList.innerHTML = '';
-            
-            leaderboard.forEach((player, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    <span>${index + 1}. ${player.name}</span>
-                    <span>${player.score} chips</span>
-                `;
-                leaderboardList.appendChild(li);
-            });
-        }
-        
-        // Login function
-        function login(username, password) {
-            if (!username || !password) {
-                showMessage("Please enter both username and password", true);
-                return false;
+
+        async function joinRoom(roomId) {
+            try {
+                const roomRef = db.collection('rooms').doc(roomId);
+                const room = await roomRef.get();
+                
+                if (!room.exists) {
+                    showMessage("Room not found", true);
+                    return;
+                }
+                
+                const roomData = room.data();
+                
+                if (roomData.players.length >= multiplayer.maxPlayers) {
+                    showMessage("Room is full", true);
+                    return;
+                }
+                
+                if (roomData.gameStarted) {
+                    showMessage("Game already started", true);
+                    return;
+                }
+                
+                await roomRef.update({
+                    players: firebase.firestore.FieldValue.arrayUnion(currentUser)
+                });
+                
+                multiplayer.roomId = roomId;
+                localStorage.setItem('lastRoom', multiplayer.roomId);
+                listenToRoomChanges();
+                showMessage(`🎮 Joined room ${roomId}`);
+                createRoomBtn.disabled = true;
+                joinRoomBtn.disabled = true;
+            } catch (error) {
+                showMessage("Error joining room: " + error.message, true);
             }
-            
-            if (!users[username]) {
-                showMessage("Username not found", true);
-                return false;
-            }
-            
-            if (users[username].password !== password) {
-                showMessage("Incorrect password", true);
-                return false;
-            }
-            
-            currentUser = username;
-            authScreen.style.display = 'none';
-            gameScreen.style.display = 'block';
-            updateBalance();
-            updateLevelDisplay();
-            localStorage.setItem('lastUser', currentUser);
-            showMessage(`Welcome back, ${username}!`);
-            return true;
         }
-        
-        // Signup function
-        function signup(username, password) {
-            if (username.length < 3) {
-                showMessage("Username must be at least 3 characters", true);
-                return false;
-            }
-            
-            if (password.length < 4) {
-                showMessage("Password must be at least 4 characters", true);
-                return false;
-            }
-            
-            if (users[username]) {
-                showMessage("Username already exists", true);
-                return false;
-            }
-            
-            users[username] = {
-                password: password,
-                balance: 100,
-                level: 1,
-                xp: 0,
-                xpToNextLevel: 100,
-                wins: 0,
-                spins: 0
-            };
-            
-            currentUser = username;
-            authScreen.style.display = 'none';
-            gameScreen.style.display = 'block';
-            updateBalance();
-            updateLevelDisplay();
-            saveData();
-            localStorage.setItem('lastUser', currentUser);
-            showMessage(`Account created, ${username}! Start with 100 chips.`);
-            return true;
-        }
-        
-        // Logout function
-        function logout() {
-            currentUser = null;
-            gameScreen.style.display = 'none';
-            authScreen.style.display = 'block';
-            loginForm.style.display = 'block';
-            signupForm.style.display = 'none';
-            document.getElementById('loginUsername').value = '';
-            document.getElementById('loginPassword').value = '';
-            document.getElementById('signupUsername').value = '';
-            document.getElementById('signupPassword').value = '';
-            localStorage.removeItem('lastUser');
-        }
-        
-        // Adjust bet amount
-        function adjustBet(level, direction) {
-            const range = {
-                low: { min: 1, max: 10, step: 1 },
-                medium: { min: 10, max: 50, step: 5 },
-                high: { min: 50, max: 250, step: 25 }
-            }[level];
-            
-            let newBet = bets[level] + (direction === 'up' ? range.step : -range.step);
-            newBet = Math.max(range.min, Math.min(range.max, newBet));
-            bets[level] = newBet;
-            updateBetDisplays();
-            saveData();
-            playSound(coinSound);
-        }
-        
-        // Get weighted random symbol for a specific slot machine
-        function getWeightedRandomSymbol(level, exclude = null) {
-            const config = slotConfigs[level];
-            let symbolPool = [];
-            
-            for (const symbol in config.symbols) {
-                if (!exclude || symbol !== exclude) {
-                    const weight = config.symbols[symbol].weight;
-                    for (let i = 0; i < weight; i++) {
-                        symbolPool.push(symbol);
+
+        function listenToRoomChanges() {
+            db.collection('rooms').doc(multiplayer.roomId).onSnapshot((doc) => {
+                const data = doc.data();
+                if (!data) return;
+                
+                multiplayer.players = data.players;
+                multiplayer.gameStarted = data.gameStarted;
+                multiplayer.currentTurn = data.currentTurn;
+                jackpot = data.jackpot || 1000;
+                jackpotDisplay.textContent = jackpot;
+                
+                updatePlayerList();
+                
+                if (multiplayer.players.length >= multiplayer.minPlayers) {
+                    startGameBtn.disabled = false;
+                } else {
+                    startGameBtn.disabled = true;
+                }
+                
+                if (multiplayer.gameStarted) {
+                    if (data.currentTurn === currentUser) {
+                        showMessage("🎲 It's your turn to spin!");
+                        enableGameControls(true);
+                    } else {
+                        showMessage(`⏳ Waiting for ${data.currentTurn} to spin...`);
+                        enableGameControls(false);
                     }
                 }
-            }
-            
-            return symbolPool[Math.floor(Math.random() * symbolPool.length)];
+            });
         }
-        
-        // Spin the slots - with adjusted odds and unique mechanics
-        function spin(level) {
+
+        async function startGame() {
+            try {
+                if (multiplayer.players.length < multiplayer.minPlayers) {
+                    showMessage(`Need at least ${multiplayer.minPlayers} players`, true);
+                    return;
+                }
+                
+                await db.collection('rooms').doc(multiplayer.roomId).update({
+                    gameStarted: true,
+                    currentTurn: multiplayer.players[Math.floor(Math.random() * multiplayer.players.length)]
+                });
+                
+                startGameBtn.disabled = true;
+                showMessage("Game started! First turn: " + multiplayer.currentTurn);
+            } catch (error) {
+                showMessage("Error starting game: " + error.message, true);
+            }
+        }
+
+        async function endTurn() {
+            try {
+                const currentIdx = multiplayer.players.indexOf(multiplayer.currentTurn);
+                const nextIdx = (currentIdx + 1) % multiplayer.players.length;
+                const nextPlayer = multiplayer.players[nextIdx];
+                
+                await db.collection('rooms').doc(multiplayer.roomId).update({
+                    currentTurn: nextPlayer
+                });
+            } catch (error) {
+                showMessage("Error passing turn: " + error.message, true);
+            }
+        }
+
+        function updatePlayerList() {
+            playerList.innerHTML = '';
+            playerCount.textContent = multiplayer.players.length;
+            
+            multiplayer.players.forEach(player => {
+                const li = document.createElement('li');
+                li.textContent = player;
+                if (player === currentUser) {
+                    li.style.fontWeight = 'bold';
+                    li.style.color = 'var(--gold)';
+                }
+                if (multiplayer.gameStarted && player === multiplayer.currentTurn) {
+                    li.innerHTML += ' 🎲';
+                }
+                playerList.appendChild(li);
+            });
+        }
+
+        function enableGameControls(enabled) {
+            document.querySelectorAll('.spin-btn').forEach(btn => {
+                btn.disabled = !enabled;
+            });
+        }
+
+        // ==================== CORE GAME FUNCTIONS ====================
+        // ... (keep all your existing game functions like spin, checkWin, etc)
+        // Just modify them to include multiplayer logic where needed
+
+        // MODIFIED spin function for multiplayer
+        async function spin(level) {
             if (!currentUser || bonusRoundActive) return false;
+            if (multiplayer.gameStarted && multiplayer.currentTurn !== currentUser) {
+                showMessage("⏳ Wait for your turn!", true);
+                return false;
+            }
             
             const bet = bets[level];
             const user = users[currentUser];
@@ -980,7 +932,13 @@
             user.balance -= bet;
             user.spins++;
             updateBalance();
-            updateJackpot();
+            
+            // In multiplayer, only update jackpot in the room (not locally)
+            if (!multiplayer.gameStarted) {
+                jackpot += Math.floor(bets.high * 0.01);
+                jackpotDisplay.textContent = jackpot;
+            }
+            
             playSound(coinSound);
             
             // Get slot elements
@@ -1102,6 +1060,15 @@
                     // Check for win
                     checkWin(results, level);
                     
+                    // In multiplayer, update the room's jackpot and pass turn
+                    if (multiplayer.gameStarted) {
+                        db.collection('rooms').doc(multiplayer.roomId).update({
+                            jackpot: jackpot
+                        }).then(() => {
+                            endTurn();
+                        });
+                    }
+                    
                     // Re-enable buttons
                     document.getElementById(`spin${level.charAt(0).toUpperCase() + level.slice(1)}`).disabled = false;
                     document.getElementById(`autoSpin${level.charAt(0).toUpperCase() + level.slice(1)}`).disabled = false;
@@ -1110,284 +1077,85 @@
                 }
             }, 100);
         }
-        
-        // Check if won - with unique mechanics for each slot type
-        function checkWin(results, level) {
-            const resultStr = results.join('');
-            const user = users[currentUser];
-            const bet = bets[level];
-            const config = slotConfigs[level];
-            let winAmount = 0;
-            
-            // Check for jackpot win (3 trophies)
-            if (results[0] === '🏆' && results[1] === '🏆' && results[2] === '🏆' && level === 'high') {
-                winAmount = jackpot;
-                user.balance += winAmount;
-                user.wins++;
-                jackpot = 1000; // Reset jackpot
-                jackpotDisplay.textContent = jackpot;
-                updateBalance();
-                updateLeaderboard(currentUser, winAmount);
-                addXP(50); // Big XP for jackpot
-                
-                // Jackpot animation
-                document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                    .forEach(slot => slot.classList.add('jackpot'));
-                
-                setTimeout(() => {
-                    document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                        .forEach(slot => slot.classList.remove('jackpot'));
-                }, 1500);
-                
-                playSound(jackpotSound);
-                showMessage(`JACKPOT!!! You won ${winAmount} chips!`, false);
-                confetti({ particleCount: 200, spread: 100 });
-                return;
-            }
-            
-            // Check for skull (lose bet)
-            if (level === 'high' && results.filter(s => s === '☠️').length >= 2) {
-                playSound(loseSound);
-                showMessage("Skulls! You lost your bet!", true);
-                return;
-            }
-            
-            // Check for mystery symbol (random multiplier)
-            if (level === 'high' && results.includes('❓')) {
-                const mysteryCount = results.filter(s => s === '❓').length;
-                const multiplier = mysteryCount === 3 ? Math.floor(Math.random() * 15) + 6 : // 6-20x for 3
-                                  mysteryCount === 2 ? Math.floor(Math.random() * 10) + 3 : // 3-12x for 2
-                                  Math.floor(Math.random() * 5) + 2; // 2-6x for 1
-                
-                winAmount = bet * multiplier;
-                user.balance += winAmount;
-                user.wins++;
-                updateBalance();
-                addXP(10 * mysteryCount); // XP based on mystery symbols
-                
-                // Win animation
-                document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                    .forEach(slot => {
-                        if (slot.textContent === '❓') slot.classList.add('win');
-                    });
-                
-                setTimeout(() => {
-                    document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                        .forEach(slot => slot.classList.remove('win'));
-                }, 1500);
-                
-                playSound(winSound);
-                showMessage(`Mystery Multiplier! You won ${winAmount} chips (${multiplier}x)!`);
-                
-                if (multiplier >= 10) {
-                    confetti({ particleCount: 100, spread: 70 });
-                }
-                return;
-            }
-            
-            // Check for exact matches first (highest payout)
-            if (results[0] === results[1] && results[1] === results[2]) {
-                const symbol = config.symbols[results[0]];
-                if (symbol.payout > 0) {
-                    winAmount = bet * symbol.payout;
-                    user.balance += winAmount;
-                    user.wins++;
-                    updateBalance();
-                    addXP(10); // Base XP for any win
-                    
-                    // Add to leaderboard for significant wins
-                    if (winAmount >= 100) {
-                        updateLeaderboard(currentUser, winAmount);
-                    }
-                    
-                    // Win animation
-                    document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                        .forEach(slot => {
-                            slot.classList.add('win');
-                            if (symbol.payout >= 5) slot.classList.add('jackpot');
-                        });
-                    
-                    setTimeout(() => {
-                        document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                            .forEach(slot => {
-                                slot.classList.remove('win');
-                                slot.classList.remove('jackpot');
-                            });
-                    }, 1500);
-                    
-                    playSound(winSound);
-                    showMessage(`${symbol.name} WIN! You won ${winAmount} chips! ${resultStr} pays ${symbol.payout}x!`);
-                    
-                    // Small chance of confetti for big wins
-                    if (winAmount >= bet * 10) {
-                        confetti({ particleCount: 100, spread: 70 });
-                    }
-                }
-            } 
-            // Check for two matching symbols (only in fruit and gem themes)
-            else if (level !== 'high' && (results[0] === results[1] || results[1] === results[2] || results[0] === results[2])) {
-                const matchedSymbol = results[0] === results[1] ? results[0] : results[2];
-                const symbol = config.symbols[matchedSymbol];
-                
-                if (symbol.payout > 0) {
-                    winAmount = Math.floor(bet * symbol.payout * 0.5); // Half payout for two matches
-                    user.balance += winAmount;
-                    user.wins++;
-                    updateBalance();
-                    addXP(5); // Half XP for partial wins
-                    
-                    // Win animation for partial win
-                    if (results[0] === results[1]) {
-                        document.querySelectorAll(`#${level}1, #${level}2`).forEach(slot => slot.classList.add('win'));
-                    } else if (results[1] === results[2]) {
-                        document.querySelectorAll(`#${level}2, #${level}3`).forEach(slot => slot.classList.add('win'));
-                    } else {
-                        document.querySelectorAll(`#${level}1, #${level}3`).forEach(slot => slot.classList.add('win'));
-                    }
-                    
-                    setTimeout(() => {
-                        document.querySelectorAll(`#${level}1, #${level}2, #${level}3`)
-                            .forEach(slot => slot.classList.remove('win'));
-                    }, 1500);
-                    
-                    playSound(winSound);
-                    showMessage(`Partial ${symbol.name} win! You won ${winAmount} chips!`);
-                } else {
-                    playSound(loseSound);
-                    showMessage("No win this time. Try again!");
-                }
-            }
-            else {
-                playSound(loseSound);
-                showMessage("No win this time. Try again!");
+
+        // ... (keep all your other existing game functions exactly as they were)
+
+        // ==================== FIREBASE AUTH FUNCTIONS ====================
+        async function login(username, password) {
+            try {
+                // We add a fake domain to the username to make it a valid email
+                const userCredential = await auth.signInWithEmailAndPassword(username + "@luckyslots.com", password);
+                currentUser = username;
+                authScreen.style.display = 'none';
+                gameScreen.style.display = 'block';
+                await loadData();
+                showMessage(`🎉 Welcome back, ${username}!`);
+                return true;
+            } catch (error) {
+                showMessage("Login failed: " + error.message, true);
+                return false;
             }
         }
-        
-        // Bonus Round Functions
-        function startBonusRound(spins) {
-            bonusRoundActive = true;
-            freeSpins = spins;
-            bonusWins = 0;
-            freeSpinsCount.textContent = spins;
-            spinsRemaining.textContent = spins;
-            bonusWinsDisplay.textContent = '0';
-            bonusRound.style.display = 'flex';
-            playSound(bonusSound);
-        }
-        
-        function endBonusRound() {
-            bonusRoundActive = false;
-            bonusRound.style.display = 'none';
-            users[currentUser].balance += bonusWins;
-            updateBalance();
-            addXP(20); // Bonus XP for completing bonus round
-            showMessage(`Bonus round complete! You won ${bonusWins} chips!`);
-        }
-        
-        function spinBonus() {
-            if (freeSpins <= 0) {
-                endBonusRound();
-                return;
-            }
-            
-            const slots = [
-                document.getElementById('bonusSlot1'),
-                document.getElementById('bonusSlot2'),
-                document.getElementById('bonusSlot3')
-            ];
-            
-            // Disable button during spin
-            bonusSpinBtn.disabled = true;
-            
-            // Play spin sound
-            playSound(spinSound);
-            
-            // Add spinning animation
-            slots.forEach(slot => slot.classList.add('spinning'));
-            
-            // Spin animation
-            let spins = 0;
-            const spinInterval = setInterval(() => {
-                slots.forEach(slot => {
-                    slot.textContent = getWeightedRandomSymbol('medium');
+
+        async function signup(username, password) {
+            try {
+                const userCredential = await auth.createUserWithEmailAndPassword(username + "@luckyslots.com", password);
+                
+                // Create user in Firestore
+                await db.collection('users').doc(username).set({
+                    balance: 100,
+                    level: 1,
+                    xp: 0,
+                    xpToNextLevel: 100,
+                    wins: 0,
+                    spins: 0
                 });
                 
-                spins++;
-                if (spins >= 15) {
-                    clearInterval(spinInterval);
-                    
-                    // Remove spinning animation
-                    slots.forEach(slot => slot.classList.remove('spinning'));
-                    
-                    // Final result
-                    const results = [
-                        getWeightedRandomSymbol('medium'),
-                        getWeightedRandomSymbol('medium'),
-                        getWeightedRandomSymbol('medium')
-                    ];
-                    
-                    slots.forEach((slot, i) => slot.textContent = results[i]);
-                    
-                    // Check for win (3x multiplier in bonus)
-                    if (results[0] === results[1] && results[1] === results[2]) {
-                        const symbol = slotConfigs.medium.symbols[results[0]];
-                        if (symbol.payout > 0) {
-                            const winAmount = bets.medium * symbol.payout * 3; // 3x multiplier
-                            bonusWins += winAmount;
-                            bonusWinsDisplay.textContent = bonusWins;
-                            
-                            // Win animation
-                            slots.forEach(slot => slot.classList.add('win'));
-                            setTimeout(() => {
-                                slots.forEach(slot => slot.classList.remove('win'));
-                            }, 1000);
-                            
-                            playSound(winSound);
-                        }
-                    }
-                    
-                    freeSpins--;
-                    spinsRemaining.textContent = freeSpins;
-                    
-                    // Re-enable button
-                    bonusSpinBtn.disabled = false;
-                    
-                    // Auto-end if no more spins
-                    if (freeSpins <= 0) {
-                        setTimeout(endBonusRound, 1500);
-                    }
-                }
-            }, 100);
-        }
-        
-        // Auto spin function
-        function autoSpin(level) {
-            if (autoSpinInterval || bonusRoundActive) {
-                stopAutoSpin();
-                return;
+                currentUser = username;
+                authScreen.style.display = 'none';
+                gameScreen.style.display = 'block';
+                await loadData();
+                showMessage(`✨ Account created, ${username}! Start with 100 chips.`);
+                return true;
+            } catch (error) {
+                showMessage("Signup failed: " + error.message, true);
+                return false;
             }
-            
-            autoSpinCount = 5;
-            document.getElementById(`autoSpin${level.charAt(0).toUpperCase() + level.slice(1)}`).textContent = "STOP AUTO SPIN";
-            
-            autoSpinInterval = setInterval(() => {
-                if (autoSpinCount > 0 && users[currentUser].balance >= bets[level]) {
-                    const didSpin = spin(level);
-                    if (didSpin) autoSpinCount--;
-                } else {
-                    stopAutoSpin();
-                }
-            }, 1500);
         }
-        
-        function stopAutoSpin() {
-            clearInterval(autoSpinInterval);
-            autoSpinInterval = null;
-            document.querySelectorAll('.auto-spin-btn').forEach(btn => {
-                btn.textContent = "AUTO SPIN (5x)";
+
+        function logout() {
+            auth.signOut().then(() => {
+                currentUser = null;
+                gameScreen.style.display = 'none';
+                authScreen.style.display = 'block';
+                loginForm.style.display = 'block';
+                signupForm.style.display = 'none';
+                document.getElementById('loginUsername').value = '';
+                document.getElementById('loginPassword').value = '';
+                document.getElementById('signupUsername').value = '';
+                document.getElementById('signupPassword').value = '';
+                localStorage.removeItem('lastRoom');
             });
         }
-        
+
+        // ==================== INITIALIZATION ====================
+        auth.onAuthStateChanged(async (user) => {
+            if (user) {
+                // User is signed in
+                currentUser = user.email.split('@')[0];
+                await loadData();
+                authScreen.style.display = 'none';
+                gameScreen.style.display = 'block';
+                
+                // Check if we were in a room before refresh
+                const lastRoom = localStorage.getItem('lastRoom');
+                if (lastRoom) {
+                    roomCodeInput.value = lastRoom;
+                    joinRoom(lastRoom);
+                }
+            }
+        });
+
         // Event Listeners
         showLogin.addEventListener('click', () => {
             loginForm.style.display = 'block';
@@ -1413,61 +1181,32 @@
         
         logoutBtn.addEventListener('click', logout);
         
-        // Bet adjustment buttons
-        document.getElementById('lowBetUp').addEventListener('click', () => adjustBet('low', 'up'));
-        document.getElementById('lowBetDown').addEventListener('click', () => adjustBet('low', 'down'));
-        document.getElementById('mediumBetUp').addEventListener('click', () => adjustBet('medium', 'up'));
-        document.getElementById('mediumBetDown').addEventListener('click', () => adjustBet('medium', 'down'));
-        document.getElementById('highBetUp').addEventListener('click', () => adjustBet('high', 'up'));
-        document.getElementById('highBetDown').addEventListener('click', () => adjustBet('high', 'down'));
-        
-        // Spin buttons
-        document.getElementById('spinLow').addEventListener('click', () => spin('low'));
-        document.getElementById('spinMedium').addEventListener('click', () => spin('medium'));
-        document.getElementById('spinHigh').addEventListener('click', () => spin('high'));
-        
-        // Auto-spin buttons
-        document.getElementById('autoSpinLow').addEventListener('click', () => autoSpin('low'));
-        document.getElementById('autoSpinMedium').addEventListener('click', () => autoSpin('medium'));
-        document.getElementById('autoSpinHigh').addEventListener('click', () => autoSpin('high'));
-        
-        // Bonus spin button
-        bonusSpinBtn.addEventListener('click', spinBonus);
-        
-        // Level up button
-        levelUpBtn.addEventListener('click', () => {
-            levelUpScreen.style.display = 'none';
+        // Multiplayer controls
+        createRoomBtn.addEventListener('click', createRoom);
+        joinRoomBtn.addEventListener('click', () => {
+            const roomCode = roomCodeInput.value.trim();
+            if (roomCode) joinRoom(roomCode);
         });
-        
-        // Initialize
-        loadData();
-        
-        // Check if already logged in
-        const lastUser = localStorage.getItem('lastUser');
-        if (lastUser && users[lastUser]) {
-            currentUser = lastUser;
-            authScreen.style.display = 'none';
-            gameScreen.style.display = 'block';
-            updateBalance();
-            updateLevelDisplay();
+        startGameBtn.addEventListener('click', startGame);
+
+        // Initialize the game
+        function init() {
+            // Check if already logged in
+            auth.onAuthStateChanged(async (user) => {
+                if (user) {
+                    currentUser = user.email.split('@')[0];
+                    await loadData();
+                    
+                    const lastRoom = localStorage.getItem('lastRoom');
+                    if (lastRoom) {
+                        roomCodeInput.value = lastRoom;
+                        joinRoom(lastRoom);
+                    }
+                }
+            });
         }
-        
-        // Enter key submission
-        document.getElementById('loginUsername').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') loginBtn.click();
-        });
-        
-        document.getElementById('loginPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') loginBtn.click();
-        });
-        
-        document.getElementById('signupUsername').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') signupBtn.click();
-        });
-        
-        document.getElementById('signupPassword').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') signupBtn.click();
-        });
+
+        init();
     </script>
 </body>
 </html>
